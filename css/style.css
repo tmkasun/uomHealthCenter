@@ -1,0 +1,121 @@
+/* CSS Document */
+a {text-decoration:none}
+
+ body, form{
+	margin: 0;
+	padding: 0;
+}
+
+
+#wrapper{
+	width:700px; 
+	margin-left:auto; 
+	margin-right:auto;
+}
+
+#wrapper_login {
+	margin: auto;
+	width: 700px;
+	position: relative;
+	height: 650px;
+}
+#header_login{
+	margin: auto;
+	position: relative;
+	height: 180px;
+	background-image: url(../images/header.jpg);
+}
+
+#header_message{
+	width:300px; 
+	position:relative;
+	height:30px; 
+	margin: auto;
+	margin-top:0px;
+	margin-left:380px;
+ 	
+}
+
+#welcom_Message{
+width:195px;
+ height:30px;
+  float:left; 
+}
+
+#navigation_pane{
+margin-left:5px;
+ width:150px;
+  height:auto;
+   float:left;	
+
+}
+
+#main_form_pane{
+width:540px;
+ float:right; 
+ margin-right:2px;
+}
+
+.main_navigation{
+	font-family: "Times New Roman", Times, serif;
+	font-size: 16px;
+	font-weight: bold;
+	color: #6fd28f;
+
+		}
+.main_navigation  a{
+	color: #6fd28f;
+	text-decoration: none;
+	
+  }
+.main_navigation a:hover{
+	color: #006633;
+	}
+	
+.sub_Navigation{
+	font-family: "Times New Roman", Times, serif;
+	font-size: 16px;
+	font-weight: bold;
+	color:#006600;
+}
+
+.sub_Navigation  a{
+	color:#006600;
+	text-decoration: none;
+	
+  }
+.sub_Navigation a:hover{
+	color:#003300;
+	}	
+
+#content_login{
+	position: relative;
+	margin: auto;
+	height: auto;
+	background-image: url(../images/body.jpg);
+	/*background-repeat: repeat-y;*/
+}
+
+
+#login{
+	height: 167px;
+	width: 300px;
+	left: 200px;
+	position: absolute;
+	top: 150px;
+	background-image: url(../images/bk10.jpg);
+}
+
+#loginmiddle{
+	height: 167px;
+	width: 300px;
+	/*margin-top: 25px;
+	margin-left: 25px;*/
+	
+}
+
+#footer_edited{
+	 height:15px;
+	 background-image: url(../images/fotter.jpg);
+	 
+}
