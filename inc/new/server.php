@@ -1,5 +1,4 @@
 <?php
-$connection = mysql_connect("mysql.1freehosting.com","u904041662_b11","kasun123");//Connecting to mysql server
 
 if(!$connection){//test whether the connection has established 
 print mysql_error();
