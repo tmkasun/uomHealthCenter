@@ -109,7 +109,7 @@ if($_SESSION['LoginStatus'] != "1")
                   die( "Could not connect to database" );
    
               // open db database
-               if ( !mysql_select_db( "healthCenterDatabase", $database ) )
+               if ( !mysql_select_db( "medicalcenterdb", $database ) )
                   die( "Could not open database" );
               // execute query in db database
                if ( !( $result1 = mysql_query( $query1, $database ) )  ) {

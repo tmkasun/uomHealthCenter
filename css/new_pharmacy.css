@@ -1,0 +1,25 @@
+@CHARSET "UTF-8";
+
+.result_style {
+	/*background style*/
+	z-index: 4;
+	background-color: rgba(11, 84, 137, 0.7);
+	background-image: linear-gradient(90deg, rgba(255, 255, 255, .07) 50%,
+		transparent 80%), linear-gradient(90deg, rgba(255, 255, 255, .13) 50%,
+		transparent 80%),
+		linear-gradient(90deg, transparent 50%, rgba(255, 255, 255, .17) 80%),
+		linear-gradient(90deg, transparent 50%, rgba(255, 255, 255, .19) 80%);
+	background-size: 13px, 29px, 37px, 53px;
+	top: 10%;
+	border-radius: 10px;
+	-moz-border-radius: 25px;
+	position: relative;
+	margin: 0;
+	margin-top: 10%;
+	float: left;
+	margin-left: 5%;
+	width: auto;
+	box-shadow: 0px 0px 20px 1px #000000;
+	padding-bottom: 4%;
+}
+

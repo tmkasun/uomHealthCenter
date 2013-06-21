@@ -7,7 +7,7 @@ if($_SESSION["USERID"]){
 	or die("Can not connect to the server");
 	//try to connect to sql server if can't connect display error message
 	
-	$dbase = mysql_select_db("healthCenterDatabase", $connection)
+	$dbase = mysql_select_db("medicalcenterdb", $connection)
 	or die("Can not access data base");
 	//select medicalcenter databse for SQL queries or display error message
 	
@@ -41,7 +41,7 @@ if($_SESSION["USERID"]){
 					
 			case 3:
 				//echo "3";
-				header('Location:'.$config_basedir.'/pages/pharmacist/pharmacist_page.php');
+				header('Location:'.$config_basedir.'/pages/pharmacist/new_pharmacist.php');
 					
 				break;
 					
@@ -157,7 +157,7 @@ if($_SESSION["USERID"]){
 						break;
 
 					case 3:
-						setTimeout(function(){window.location.href = '/pages/pharmacist/pharmacist_page.php';},1000);
+						setTimeout(function(){window.location.href = '/pages/pharmacist/new_pharmacist.php';},1000);
 						
 						break;
 

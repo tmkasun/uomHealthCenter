@@ -2,11 +2,13 @@
 
 require '../../inc/config.php';
 
-$update_sql = "update treatment set TreatmentStatus = 1 where TreatmentID  = '$_POST[TreatmentID]'";
+$update_sql = "update treatment set TreatmentStatus = 1 where TreatmentID  = '$_POST[time_stamp]'";
  
-mysql_query($update_sql,$connection);
+$result = mysql_query($update_sql,$connection);
 error_reporting(E_PARSE);
 
+if($result)
+	print "Updated";
 
 
 ?>

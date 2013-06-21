@@ -19,19 +19,7 @@ function feedback_div_close_function(me){
 }
 /* feedback click function --end*/
 
-//profile pic changer using ajax
 
-//profile pic changer using ajax --end
-
-//on mouse over profile pic changer upload a new profile pic message 
-function hover_profilepic_message(){
-    //alert("ok");
-    $("#profile_pic_upload_div").fadeIn("slow");
-   
-}
-
-
-//on mouse over profile pic changer upload a new profile pic message  --end
 
 /* feedback click function */
 

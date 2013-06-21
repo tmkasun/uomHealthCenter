@@ -12,6 +12,7 @@ if($_SESSION['LoginStatus'] != "3")
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+
 <!--script src="jquery.js" language="JavaScript" type="text/javascript"></script >
 <script src="notification.js" language="JavaScript" type="text/javascript"></script -->
 <script type="text/javascript"
@@ -128,66 +129,7 @@ function getLatestTreatments(){
 </script>
 
 <title>Pharmacist Home Page</title>
-<link href="../../css/style.css" rel="stylesheet" type="text/css" />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<style type="text/css">
-<!--
-.style2 {
-	color: #000000
-}
--->
-</style>
-<style>
-#notification {
-	position: fixed;
-	bottom: 0%;
-	right: 2%;
-	height: 150px;
-	width: 120px;
-	border: 1px solid black;
-	border-bottom: 0px;
-}
-
-#notificationClose {
-	font-size: 11px;
-	width: 100%;
-	border-bottom: 1px solid black;
-}
-
-#notificationIn {
-	padding: 10px;
-	font-size: 11px;
-	cursor: pointer;
-}
-
-</style>
-<style type="text/css">
-.result_style{
-    /*background style*/
-
-    z-index: 4;
-    background-color: rgba(11, 84, 137, 0.7);
-    background-image: linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 80%),
-    linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 80%),
-    linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 80%),
-    linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 80%);
-    background-size: 13px, 29px, 37px, 53px;
-    top: 10%;
-    border-radius:10px;
-    -moz-border-radius:25px;
-    position: relative;
-    margin: 0;
-    margin-top: 10%;
-    float: left;
-    margin-left: 5%;
-    width: auto;
-    box-shadow: 0px 0px 20px 1px #000000;
-    padding-bottom: 4%;
-
-
-}
-
-</style>
 
 </head>
 
@@ -230,7 +172,7 @@ function getLatestTreatments(){
 
 						<div>
 							<!--Insert navigation divs here -->
-							
+
 
 							<div class="sub_Navigation" align="center"
 								style="height: 30px; background: url(../../images/sidebarmenu.jpg) no-repeat;">
@@ -257,43 +199,7 @@ function getLatestTreatments(){
 
 					<!--*************************************** -->
 
-					<div class="main_form_pane" id = "main_form_pane_id">
-				
-					
-						<!-- div>
-<table width="100%" height="450px" bgcolor="#FFFFFF"align="center" border="0">
-				<tr valign="top">  
-   				  	
-	   			  	<td width="100%" valign="top" colspan="2">
-					
-					
-					<iframe id="iframe" name="iframe" src="showTreatment.php" scrolling="auto" 
- 						width="99%" height="450" frameborder="1">
-						
-						
- 							
-					</iframe>
-					
-			
-				 	</td>	
-	  			</tr>
-			</table>
-		</td>
-	</tr>
-</table>
- 	
-<div id="notification">
-			<div id="notificationClose">
-				Notification message
-			<div style="float:right">X</div>
-			</div>
-			<div id="notificationIn">
-			</div>
-</div>
-
-</div -->
-
-					</div>
+					<div class="main_form_pane" id="main_form_pane_id"></div>
 					<!--End of main_form_pane -->
 				</div>
 				<!--End of main content -->

@@ -8,7 +8,8 @@
 require '../../inc/config.php';
 $request_type = $_POST["requestType"];
 $method = $_POST["method"];
-$data = $_POST["data"];
+$data = mysql_real_escape_string($_POST["data"]);
+
 switch ($method) {
      case "retrive":
            
@@ -36,6 +37,7 @@ switch ($method) {
           break;
 
      case "insert":
+     	
           $retrive_sql = "insert into $request_type values('$data')";
           print $retrive_sql;
           $information_object = mysql_query($retrive_sql,$connection);

@@ -25,8 +25,8 @@ function close_preTreatmentDetails(me) {
 // profile pic changer using ajax --end
 // on mouse over profile pic changer upload a new profile pic message
 function hover_profilepic_message() {
-	// alert("ok");
-	$("#profile_pic_upload_div").fadeIn("slow");
+	//alert("ok");
+	//$("#profile_pic_upload_div").fadeIn("slow");
 
 }
 
@@ -156,6 +156,8 @@ function clk(passed_reg_number) {// pass registration number of the student
 	ajax_object.send();
 
 }
+
+
 // row select for admin users
 function clk_admin(rows) {
 	$("#result_box").slideUp("slow");
@@ -312,8 +314,10 @@ function name_dis(cname, flag) {// upper banner change name to cname effect
 	}
 
 }
+
 function scrch() {
 	$("#navigation_pane").slideUp("fast");
+	//$("#show_navigation_pane").slideDown();
 	document.getElementById("sch").style.backgroundColor = "#EBF5FF";
 }
 function search_f() {// while searching animation
@@ -447,60 +451,7 @@ function loadMhistoryPage(this_button) {
 
 }
 
-function preTreatmentDetails(thisRow) {
-	var thisRowId = thisRow.id;
-	$.ajax({
-		url : 'new_getTreatmentInfo.php',
-		type : "POST",
-		data : {
-			"TreatmentID" : thisRowId
-		}
-	}).done(
-			function(result) {
 
-				// $("#pre_treatment_details").html(result);
-
-				var body = document.getElementById("body");
-				body.setAttribute("style", "background: rgba(0, 0, 0, 0.5)");
-
-				var treatmentDetails = document.createElement("div");
-				treatmentDetails.setAttribute("z-index", "50");
-				treatmentDetails.setAttribute("id", "thisTreatmentDetails");
-				//treatmentDetails.setAttribute("style", "overflow: auto");
-				// var newContaint = document.createTextNode(result);
-				// treatmentDetails.appendChild(newContaint);
-				var pre_treatment_details = document
-						.getElementById("pre_treatment_details");
-
-				pre_treatment_details.replaceChild(treatmentDetails,
-						pre_treatment_details.lastChild);
-				$("#thisTreatmentDetails").html(result);
-
-				$("#pre_treatment_details").fadeIn("fast");
-			});
-
-	/*
-	 * var resultBox = document.getElementById("result_box"); var newMessageDiv =
-	 * document.createElement("div"); newMessageDiv.setAttribute("position",
-	 * "fixed");
-	 * 
-	 * newMessageDiv.setAttribute("z-index", "50"); var newContaint =
-	 * document.createTextNode("Hi this is a testing message");
-	 * newMessageDiv.appendChild(newContaint);
-	 * 
-	 * //resultBox.appendChild(newMessageDiv);
-	 * resultBox.insertBefore(newMessageDiv,
-	 * document.getElementById("treatmentTable"));
-	 */
-}
-
-function submitInvestigation() {
-
-	investigation = $("#investigation :selected").text();
-	alert(sessionStudentID + " ==>  has Submit Investigation ==> "
-			+ investigation);
-
-}
 
 function addNewComplaint(requestType) {
 	$
@@ -554,9 +505,9 @@ function addNewComplaint(requestType) {
 
 function removeThisInformation(informationID,requestType) {
 
+	
 	//alert(informationID.id+ "sadsaf"+ document.getElementById(informationID.id).getAttribute("requestType"));
 var requestType = document.getElementById(informationID.id).getAttribute("requestType");
-
 	
 	$.ajax({
 		url : 'new_details_from_database.php',
@@ -570,6 +521,7 @@ var requestType = document.getElementById(informationID.id).getAttribute("reques
 		//alert(result);
 $("."+informationID.id).fadeOut();
 loadTreatmentPage();
+alert(informationID.id+" has been removed Successfully");
 	}
 
 	);
@@ -600,6 +552,7 @@ var requestType = document.getElementById("newInformation").getAttribute("inputT
 		//alert("Ok");
 		loadTreatmentPage();
 		close_preTreatmentDetails();
+		alert(data+" added Successfully");
 //var parent = document.getElementById(elementId);
 	
 	}
