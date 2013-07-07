@@ -9,8 +9,25 @@ require '../../inc/config.php';
 $request_type = $_POST["requestType"];
 $method = $_POST["method"];
 $data = mysql_real_escape_string($_POST["data"]);
+$currentInputValue = $_POST["currentInputValue"]; //only used in search to use with mysql like keyword
 
 switch ($method) {
+	case "search":
+		$search_sql = "select * from ".$request_type." where ".$request_type." like '%".$currentInputValue."%'";
+		//die($retrive_sql);
+		$information_object = mysql_query($search_sql,$connection);
+		error_reporting(E_PARSE);
+		
+		while($data = mysql_fetch_assoc($information_object )){
+		
+			$result_array[] =$data; //array("TreatmentID"=>,"TreatmentDate"=>,"Complaint"=>,"Diagnosis"=>,"Treatment_info"=>,"StudentID"=>,"Investigation"=>,"TreatmentStatus"=>,"RefDoctor"=>,"InvestigationStatus"=>);
+		
+		}
+		echo json_encode($result_array);
+		
+		
+		break;
+		
      case "retrive":
            
           $retrive_sql = "select * from ".$request_type;

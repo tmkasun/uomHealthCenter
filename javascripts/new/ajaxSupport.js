@@ -330,7 +330,7 @@ function search_f() {// while searching animation
 
 function loadTreatmentPage(this_button) {
 	// alert(sessionStudentID);
-	$("#result_box").slideUp("slow");
+	//$("#result_box").fadeOut("slow");
 	$("#ajax_loading_div").fadeIn("fast");
 	//var this_button_id = this_button.id;
 
@@ -343,8 +343,7 @@ function loadTreatmentPage(this_button) {
 			"StudentID" : sessionStudentID
 		},
 	}).done(function(result) {
-
-		$("#result_box").slideDown("slow");
+		$("#result_box").fadeIn("slow");
 		$("#result_box").html(result);
 		$("#ajax_loading_div").fadeOut("fast");
 	}
@@ -453,55 +452,6 @@ function loadMhistoryPage(this_button) {
 
 
 
-function addNewComplaint(requestType) {
-	$
-			.ajax({
-				url : 'new_details_from_database.php',
-				type : "POST",
-				dataType : "JSON",
-				data : {
-					"requestType" : requestType,
-					"method" : "retrive"
-				}
-			})
-			.done(
-					function(result) {
-						// alert(result);
-						var treatmentDetails = document.createElement("div");
-						treatmentDetails.setAttribute("z-index", "50");
-						treatmentDetails.setAttribute("style", "overflow: auto");
-						treatmentDetails.setAttribute("id",
-								"thisTreatmentDetails");
-						
-						var pre_treatment_details = document
-								.getElementById("pre_treatment_details");
-
-						pre_treatment_details.replaceChild(treatmentDetails,
-								pre_treatment_details.lastChild);
-
-						var html = '<div style="width: 70%;margin-left: auto;margin-right: auto;color:blue;position: relative;">Current '+requestType+' list</div><br/>';
-						html += '<div style="width: 90%;margin-left: auto;margin-right: auto;color:black;position: relative;overflow: auto;height: 200px">';
-						for ( var information in result) {
-							for ( var data in result[information]) {
-								html += "<font class ='"
-										+ result[information][data]
-										+ "' >"+result[information][data] 
-										+ "<img alt='remove this' style='position:relative;margin-left:25px;top:+7px' src= '../../images/new/mm/remove-icon.png' id='"
-										+ result[information][data]
-										+ "' onClick ='removeThisInformation(this)' requestType = '"
-										+ requestType + "' /></font><br/>";
-							}
-
-						}
-
-						html += "</div><br/><input style='position:relative;margin-left:25px;float:left;' id='newInformation' inputType = '"+ requestType + "' type='text'/><img style='position:relative;float:left;margin-left:20px;' src= '../../images/new/mm/add-icon.png'  onClick ='addThisInformation(this)' /><br/>";
-
-						$("#thisTreatmentDetails").html(html);
-
-						$("#pre_treatment_details").fadeIn("fast");
-					});
-
-}
 
 function removeThisInformation(informationID,requestType) {
 

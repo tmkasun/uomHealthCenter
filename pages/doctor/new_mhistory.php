@@ -32,12 +32,20 @@ if($_SESSION['LoginStatus'] != "2")
 </head>
 
 <body>
-
+<!-- __________________________ This is the common div for display each treatment details __________________________ -->
+	<div id="pre_treatment_details"
+		style="position: fixed; width: 70%; height: auto; margin-left: 15%; margin-right: 15%; background: rgba(255, 255, 199, 1); margin-top: 0%; border-radius: 12px; z-index: 50; display: none; box-shadow: 0px 0px 20px 1px #000000;">
+		<img onclick="close_preTreatmentDetails()" alt="close"
+			src="../../images/new/mm/no.ico"
+			style="position: relative; float: right;">
+	</div>
+	<!-- __________________________ This is the common div for display each treatment details End __________________________ -->
+	
 <div style="position: relative;width: 50%;float: left;margin-left: 20%;">
 
-     <table border="0" width="100%">
+     <table border="0" width="100%" > 
 
-          <tr>
+          <tr >
                <td><?php
 
                $regNo=$_SESSION['PATIENT_ID'];
@@ -47,7 +55,7 @@ if($_SESSION['LoginStatus'] != "2")
 	 
 	 		</div>";
                ?>
-                    <table id="insured_list" class="tablesorter">
+                    <table id="insured_list" class="tablesorter" style="height: 500px;overflow: auto;">
                          <thead>
                               <tr>
                                    <th width="15%" align="center">Date</th>
@@ -81,10 +89,10 @@ if($_SESSION['LoginStatus'] != "2")
                                
                                
                               echo"<tr height='25px'>
-				<td  width='14%' style='color:#CC0099'>".$row['TreatmentDate']."</td>
-				<td  width='14%' style='color:#CC0099'>".$row['Complaint']."</td>
+				<td  width='14%' style='color:#CC0099'>".date("Y-d-m",strtotime($row['time_stamp']))."</td>
+				<td  width='14%' style='color:#CC0099'>Click On view to see details</td>
 				<td  width='14%' style='color:#CC0099'>".$row['RefDoctor']."</td>
-				<td  width='14%'><FORM ACTION='leaveformprint.php' METHOD=POST><INPUT TYPE=HIDDEN NAME=recordid VALUE ='".$row['TreatmentID']."' ><center><input type='image' value='submit' src='img/viewButton.png' width='105' height='37' /></center></FORM></td>
+				<td  width='14%'><INPUT TYPE=HIDDEN NAME=recordid VALUE ='".$row['TreatmentID']."' ><center><input id='".$row["time_stamp"]."' onclick='preTreatmentDetails(this)' type='image' value='submit' src='img/viewButton.png' width='105' height='37' /></center></td>
 			  </tr>";
                                
                                
@@ -96,39 +104,9 @@ if($_SESSION['LoginStatus'] != "2")
 
                          ?>
 
-                         <tr height="25px">
-                              <td width="15%" align="center"></td>
-                              <td width="45%" align="center"></td>
-                              <td width="25%" align="center"></td>
-                              <td width="15%" align="center"></td>
-                         </tr>
-                         <tr height="25px">
-                              <td width="15%" align="center"></td>
-                              <td width="45%" align="center"></td>
-                              <td width="25%" align="center"></td>
-                              <td width="15%" align="center"></td>
-                         </tr>
                     </table>
-                    <div id="pager" class="pager">
-                         <form>
-                              <img src="../../images/first.png"
-                                   class="first" /> <img
-                                   src="../../images/prev.png"
-                                   class="prev" /> <input type="text"
-                                   class="pagedisplay" /> <img
-                                   src="../../images/next.png"
-                                   class="next" /> <img
-                                   src="../../images/last.png"
-                                   class="last" /> <select
-                                   class="pagesize">
-                                   <option value="2">2 per page</option>
-                                   <option value="5">5 per page</option>
-                                   <option value="8" selected="selected">8
-                                        per page</option>
 
-                              </select>
-                         </form>
-                    </div> <!--  script defer="defer">
+                         <!--  script defer="defer">
 	$(document).ready(function() 
     { 
         $("#insured_list")

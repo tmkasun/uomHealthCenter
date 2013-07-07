@@ -28,7 +28,7 @@ function connect($db, $user, $password){
 	}
 }
 function getContent($link, $num){
-	$res = @mysql_query("SELECT time_stamp FROM treatment WHERE StudentID = '$num' ORDER BY TreatmentID DESC", $link);
+	$res = @mysql_query("SELECT time_stamp FROM treatment WHERE StudentID = '$num' ORDER BY TreatmentID DESC LIMIT 6", $link);
 	if(!$res)
 		die("Error: ".mysql_error());
 	else
@@ -162,6 +162,12 @@ $treatment_loop_count +=1;
 			if($treatment_loop_count ==0)
 				print "No previous treatment records Found";
 			//echo $result;
+			//write see more button to redirect to medical history page
+			elseif ($treatment_loop_count >5) {
+			?>
+			<button onclick="loadMhistoryPage('noId')">See more</button>
+			<?php 
+			}
 			break;
 case "insert":
 	//$regNo,$refDoctor,$link

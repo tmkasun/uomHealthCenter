@@ -18,8 +18,6 @@ else if(isset($_GET['id'])){
 }
 ?>
 <head>
-
-
 <script type="text/javascript"
 	src="../../javascripts/NewTreatmentAjax.js"></script>
 
@@ -71,6 +69,7 @@ mysqli_close($connection);//close database connection after retreving data
 
 ?>
 <body>
+
 	<!-- __________________________ This is the common div for display each treatment details __________________________ -->
 	<div id="pre_treatment_details"
 		style="position: fixed; width: 70%; height: auto; margin-left: 15%; margin-right: 15%; background: rgba(255, 255, 199, 1); margin-top: 0%; border-radius: 12px; z-index: 50; display: none; box-shadow: 0px 0px 20px 1px #000000;">
@@ -119,14 +118,15 @@ mysqli_close($connection);//close database connection after retreving data
 			<!-- Pre Treatment Details section -->
 
 			<td valign="top" rowspan="1" style="height: auto; width: 50%;"><span>
-					<font color='#000000' face='Tahoma' size='3'>Previous Treatments
-						Details</font>
+					<font color='#000000' face='Tahoma' size='3'>Previous Treatments</font>
 			</span>
 				<div id="container"
 					style="height: 100%; overflow: auto; width: 50%;">
+					
 					<ul class="menu"">
 
 					</ul>
+					
 					<span class="clear"></span>
 					<!-- ----------------------------------------------------------------------Debug---------------------------------------------------------------------- -->
 					<!-- 	updateTreatment.php
@@ -143,6 +143,7 @@ mysqli_close($connection);//close database connection after retreving data
 						</ul>
 
 					</div>
+					
 				</div>
 			</td>
 			<!-- Previous Treatments Details section End-->
@@ -166,7 +167,6 @@ mysqli_close($connection);//close database connection after retreving data
                                                     nextSelectObject.setAttribute("id", "complaint"+numberOfComplaintList);
                                                     nextSelectObject.setAttribute("onchange", "if (this.selectedIndex) onchangeComplaint(this);");
                                                     nextSelectObject.setAttribute("class", "complaints_class");
-                                                    
                                                     nextSelectObject.setAttribute("display", "none");                                                         
                                                     nextSelectObject.innerHTML = currentComplaintInnerHtml;  
                                                     var complaintParentElement = document.getElementById("complaint_div");
@@ -342,11 +342,11 @@ mysqli_close($connection);//close database connection after retreving data
                                                     nextinputObject.setAttribute("display", "none");                                                         
 
 
-													
-                                                    $(nextAcPcObject).css("margin","2%");                                                         
+													//margin-left: ;margin-right: 
+                                                    $(nextAcPcObject).css({"margin":"2%","margin-left": "10%","margin-right":"10%"});                                                         
                                                     $(nextFrequencyObject).css("margin","2%");                                                         
-                                                    $(nextinputObject).css("margin","2%");
-													$(nextinputObject).css("margin","2%");
+                                                    $(nextinputObject).css({"margin":"2%","margin-left": "10%","margin-right":"10%"});
+													//$(nextinputObject).css("margin","2%");
 
 													
                                                     nextSelectObject.innerHTML = currentTreatmentInnerHtml;

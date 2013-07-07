@@ -18,7 +18,7 @@ var investigation;
 
 // on submit event
 $("#submitTreatment").click(function() {
-	//alert($("#treatmentOtherNotes").val());
+	// alert($("#treatmentOtherNotes").val());
 
 	if (checkForm()) {
 
@@ -52,7 +52,7 @@ $("#submitTreatment").click(function() {
 			 * _refDoctor,
 			 */
 			complete : function(data) {
-				//alert(data.responseText);
+				// alert(data.responseText);
 				messageList.html(data.responseText);
 
 				updateShoutbox();
@@ -60,7 +60,9 @@ $("#submitTreatment").click(function() {
 				$("#submitTreatment").attr({
 					disabled : true,
 					value : "Submit"
-				}).css({display:"none"});
+				}).css({
+					display : "none"
+				});
 			}
 
 		});
@@ -110,7 +112,7 @@ function checkForm() {
 	// value)
 	acPc.pop();
 
-	//put all drug,dosage,frequency and acPc details into one 2D array
+	// put all drug,dosage,frequency and acPc details into one 2D array
 	for ( var i = 0; i < drug.length; i++) {
 		// remove unwanted records
 
@@ -119,7 +121,7 @@ function checkForm() {
 
 	}
 
-	//alert(JSON.stringify(treatment));
+	// alert(JSON.stringify(treatment));
 
 	var countComplaint = 0;
 	$(".complaints_class").each(function() {
@@ -148,18 +150,19 @@ function checkForm() {
 	 * treatment = $("#treatment :selected").text(); investigation =
 	 * $("#investigation :selected").text();
 	 * 
-	 *  */
+	 */
 
-
-//simple form validation, cheack weather all complaint diagnoses and treatment section atleast one option is selected	
-	if (regNo.attr("value") && (complaints.length > 0) && (diagnoses.length) && (treatment.length))
+	// simple form validation, cheack weather all complaint diagnoses and
+	// treatment section atleast one option is selected
+	if (regNo.attr("value") && (complaints.length > 0) && (diagnoses.length)
+			&& (treatment.length))
 		return true;
 	else
 		return false;
 
 }
 
-//get previous treatment details (display the dates of the previous details)
+// get previous treatment details (display the dates of the previous details)
 function updateShoutbox() {
 	// just for the fade effect
 	messageList.hide();
@@ -194,10 +197,15 @@ $(document).ready(function() {
 	updateShoutbox();
 });
 
-//retrive student treatment information onclick time stamp in shoutbox
+// retrive student treatment information onclick time stamp in shoutbox
 function preTreatmentDetails(thisRow) {
+	//alert("oks");
+	//return 0;
 	var thisRowId = thisRow.id;
+	//alert(thisRowId);
 	//alert(thisRowId+_regNo);
+	//return 0;
+	
 	$.ajax({
 		url : 'new_getTreatmentInfo.php',
 		type : "POST",
@@ -209,14 +217,14 @@ function preTreatmentDetails(thisRow) {
 			function(result) {
 
 				// $("#pre_treatment_details").html(result);
-				//alert(result);
+				// alert(result);
 				var body = document.getElementById("body");
 				body.setAttribute("style", "background: rgba(0, 0, 0, 0.5)");
 
 				var treatmentDetails = document.createElement("div");
 				treatmentDetails.setAttribute("z-index", "50");
 				treatmentDetails.setAttribute("id", "thisTreatmentDetails");
-				//treatmentDetails.setAttribute("style", "overflow: auto");
+				// treatmentDetails.setAttribute("style", "overflow: auto");
 				// var newContaint = document.createTextNode(result);
 				// treatmentDetails.appendChild(newContaint);
 				var pre_treatment_details = document
@@ -244,11 +252,117 @@ function preTreatmentDetails(thisRow) {
 	 */
 }
 
-//submit investigations to MLT (separate from giving treatments to patiens)
+// submit investigations to MLT (separate from giving treatments to patiens)
 function submitInvestigation() {
 
 	investigation = $("#investigation :selected").text();
 	alert(sessionStudentID + " ==>  has Submit Investigation ==> "
 			+ investigation);
+
+}
+
+// add or remove complaint , treatment , or diagnosis from doctors view
+
+// need to debug this function is using old and poor method in implimentation
+// Kasun Thennakoon :)
+function addNewComplaint(requestType) {
+	$
+			.ajax({
+				url : 'new_details_from_database.php',
+				type : "POST",
+				dataType : "JSON",
+				data : {
+					"requestType" : requestType,
+					"method" : "retrive"
+				}
+			})
+			.done(
+					function(result) {
+						// alert(result);
+						var treatmentDetails = document.createElement("div");
+						treatmentDetails.setAttribute("z-index", "50");
+						treatmentDetails
+								.setAttribute("style", "overflow: auto");
+						treatmentDetails.setAttribute("id",
+								"thisTreatmentDetails");
+
+						var pre_treatment_details = document
+								.getElementById("pre_treatment_details");
+
+						pre_treatment_details.replaceChild(treatmentDetails,
+								pre_treatment_details.lastChild);
+
+						var html = '<div style="width: 70%;margin-left: auto;margin-right: auto;color:blue;position: relative;">Current '
+								+ requestType + ' list</div><br/>';
+						html += '<div id="ajaxRetrievedDetails" style="width: 90%;margin-left: auto;margin-right: auto;color:black;position: relative;overflow: auto;height: 200px">';
+						for ( var information in result) {
+							for ( var data in result[information]) {
+								html += "<font class ='"
+										+ result[information][data]
+										+ "' >"
+										+ result[information][data]
+										+ "<img alt='remove this' style='position:relative;margin-left:25px;top:+7px' src= '../../images/new/mm/remove-icon.png' id='"
+										+ result[information][data]
+										+ "' onClick ='removeThisInformation(this)' requestType = '"
+										+ requestType + "' /></font><br/>";
+							}
+
+						}
+
+						html += "</div><br/><input style='position:relative;margin-left:25px;float:left;' id='newInformation'  inputType = '"
+								+ requestType
+								+ "' type='text'/><img style='position:relative;float:left;margin-left:20px;' src= '../../images/new/mm/add-icon.png'  onClick ='addThisInformation(this)' /><br/>";
+
+						$("#thisTreatmentDetails").html(html);
+						$("#newInformation").attr(
+								{
+									"onkeyup" : "ajaxReloadThisList('"
+											+ requestType + "')"
+								});
+						// onkeypress='ajaxReloadThisList('"+requestType+"')'
+
+						$("#pre_treatment_details").fadeIn("fast");
+						$("#newInformation").focus();
+					});
+
+}
+
+// refresh list in complints , treatments, and diagnoses on keypress when doctor
+// tries to add or remove new or excisting abouve item
+function ajaxReloadThisList(requestType) {
+	//alert($("#newInformation").val());
+	//alert(requestType);
+	//return 0;
+
+	var currentInputValue = $("#newInformation").val();
+	$.ajax({
+		url : 'new_details_from_database.php',
+		type : "POST",
+		dataType : "JSON",		
+		data : {
+			"requestType" : requestType,
+			"method" : "search",
+			"currentInputValue" :currentInputValue
+		}
+	}).done(function(result) {
+		//alert(result);
+		var html="";
+		for ( var information in result) {
+			for ( var data in result[information]) {
+				html += "<font class ='"
+						+ result[information][data]
+						+ "' >"
+						+ result[information][data]
+						+ "<img alt='remove this' style='position:relative;margin-left:25px;top:+7px' src= '../../images/new/mm/remove-icon.png' id='"
+						+ result[information][data]
+						+ "' onClick ='removeThisInformation(this)' requestType = '"
+						+ requestType + "' /></font><br/>";
+			}
+
+		}
+		$("#ajaxRetrievedDetails").html(html);
+		
+
+	});
 
 }
