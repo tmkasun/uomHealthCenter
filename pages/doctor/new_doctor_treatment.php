@@ -1,28 +1,28 @@
-<?php session_start();
-//Start session
+<?php
 
-//cheack the session variable and if it is not set redirect to index.php
-if($_SESSION['LoginStatus'] != "2")
-{
-	header('Location: index.php');
+session_start ();
+// Start session
+
+// cheack the session variable and if it is not set redirect to index.php
+if ($_SESSION ['LoginStatus'] != "2") {
+	header ( 'Location: index.php' );
 }
 
-if($_POST){
-	extract ( $_POST );
-	$patientIndex = $_POST["StudentID"];
-	session_register("PATIENT_ID");
-	$_SESSION['PATIENT_ID'] = $_POST["StudentID"];
-}
-else if(isset($_GET['id'])){
-	$_SESSION['PATIENT_ID']=$_GET['id'];
+if ($_POST) {
+	extract( $_POST );
+	$patientIndex = $_POST ["StudentID"];
+	//session_register( "PATIENT_ID" );
+	$_SESSION ['PATIENT_ID'] = $_POST ["StudentID"];
+} else if (isset ( $_GET ['id'] )) {
+	$_SESSION ['PATIENT_ID'] = $_GET ['id'];
 }
 ?>
 <head>
-<script type="text/javascript"
-	src="../../javascripts/NewTreatmentAjax.js"></script>
-
-<script src="../../javascripts/new/jquery-1.8.3.js"></script>
-
+<!-- jquery-1.9.1.js -->
+<script src="../../javascripts/new/js/jquery-1.9.1.js"></script>
+<script src="../../javascripts/TreatmentAjax.js"></script>
+<script src="../../javascripts/new/js/jquery-ui-1.10.3.custom.min.js"></script>
+<link href="../../css/newJQ/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css" />
 
 
 <style type="text/css">
@@ -44,67 +44,70 @@ else if(isset($_GET['id'])){
 }
 </style>
 </head>
-<?php
-/*new AJAX dropdown menu
- *
-*/
-include_once('../../inc/config.php');
+<?php 
+/*
+       * new AJAX dropdown menu
+       */
+include_once ('../../inc/config.php');
 $complains_list_query = "select * from complaint ORDER BY complaint ASC";
 $diagnosis_list_query = "select * from diagnosis ORDER BY diagnosis ASC";
 $treatment_list_query = "select * from treatment_type ORDER BY treatment_type ASC";
 
 $patientAllergiesQuery = "select * from allergies where StudentID = '$_SESSION[PATIENT_ID]' ";
 
-$diagnosis_result = mysql_query($diagnosis_list_query,$connection);
-$complains_result = mysql_query($complains_list_query,$connection);
+$diagnosis_result = mysql_query ( $diagnosis_list_query, $connection );
+$complains_result = mysql_query ( $complains_list_query, $connection );
 
-$allergies_result = mysql_query($patientAllergiesQuery,$connection);
+$allergies_result = mysql_query ( $patientAllergiesQuery, $connection );
 
-$treatment_result = mysql_query($treatment_list_query,$connection);
+$treatment_result = mysql_query ( $treatment_list_query, $connection );
 
-mysqli_close($connection);//close database connection after retreving data
-
-
-
-
+mysqli_close ( $connection );
+// close database connection after retreving data
 ?>
 <body>
 
 	<!-- __________________________ This is the common div for display each treatment details __________________________ -->
 	<div id="pre_treatment_details"
 		style="position: fixed; width: 70%; height: auto; margin-left: 15%; margin-right: 15%; background: rgba(255, 255, 199, 1); margin-top: 0%; border-radius: 12px; z-index: 50; display: none; box-shadow: 0px 0px 20px 1px #000000;">
-		<img onclick="close_preTreatmentDetails()" alt="close"
-			src="../../images/new/mm/no.ico"
+		<img style="cursor: pointer;float: right;margin-right: 10px;margin-top: 10px;" onclick="close_preTreatmentDetails()"
+			alt="close" src="../../images/new/mm/no.ico"
 			style="position: relative; float: right;">
+	
 	</div>
+	
+	<script type="text/javascript">
+$(function() {
+	$("#pre_treatment_details").draggable();
+	
+	
+});
+	</script>
 	<!-- __________________________ This is the common div for display each treatment details End __________________________ -->
 	<button class="def_button"
 		style="position: relative; float: left; text-align: center;"
 		onclick="slideup()" class="clear_bt" value="Go Back">Back</button>
 
 	<table id="treatmentTable" border="1"
-		style="margin-left: 12%; background: rgba(100, 200, 255, 0.3); border-radius: 30px; border: none; height: auto;"
-		width="80%">
+		style="margin-left: 12%; background: rgba(100, 200, 255, 0.3); border-radius: 30px; border: none; height: auto;width: 80%">
 
 		<tr valign="top">
 			<td width="50%"><img id="profile_pic"
 				onmouseover="hover_profilepic_message()"
-				onclick="window.open('<?php echo  $_SESSION["hqImageUrl"]; ?>','location=no','menubar=no','toolbar=no','titlebar=no','status=no');"
-				src="<?php print $_SESSION["imageUrl"]; ?>" width="20%" height="40%">
-				</img> <!-- ______________________________Patients allergies Details______________________________ -->
+				onclick="window.open('<?php echo $_SESSION["hqImageUrl"]; ?>','location=no','menubar=no','toolbar=no','titlebar=no','status=no');"
+				src="<?php print $_SESSION["imageUrl"]; ?>" width="20%" height="40%" />
+ <!-- ______________________________Patients allergies Details______________________________ -->
 				<div
 					style="background-color: red; margin: 0, auto; width: 30%; float: right; border-radius: 10px; box-shadow: 0px 0px 10px 1px #545454; margin-right: 25%;">
 					<span style="position: relative; float: left;">Allergies Details</span>
 					<ul>
-						<?php 
-						while ($result = mysql_fetch_assoc($allergies_result)) {
-?>
+						<?php
+						while ( $result = mysql_fetch_assoc ( $allergies_result ) ) {
+							?>
 
-						<li><?php print $result["allergy"];?></li>
+						<li><?php print $result["allergy"]; ?></li>
 
-						<?php 
-						}
-						?>
+						<?php } ?>
 					</ul>
 				</div> <!-- ______________________________Patients allergies Details End______________________________ -->
 
@@ -112,8 +115,7 @@ mysqli_close($connection);//close database connection after retreving data
 				disabled="disabled" type="text" size="12" name="regNo" id="regNo"
 				style="color: fuchsia;" value='<?php echo $_SESSION['PATIENT_ID']?>' />
 				<!-- Unknown hidden variable --> <input type="hidden"
-				name="indexNum1" />
-			</td>
+				name="indexNum1" /></td>
 
 			<!-- Pre Treatment Details section -->
 
@@ -121,12 +123,12 @@ mysqli_close($connection);//close database connection after retreving data
 					<font color='#000000' face='Tahoma' size='3'>Previous Treatments</font>
 			</span>
 				<div id="container"
-					style="height: 100%; overflow: auto; width: 50%;">
-					
-					<ul class="menu"">
+					style="height: 100%; overflow: auto; width: 80%;">
+
+					<ul class="menu">
 
 					</ul>
-					
+
 					<span class="clear"></span>
 					<!-- ----------------------------------------------------------------------Debug---------------------------------------------------------------------- -->
 					<!-- 	updateTreatment.php
@@ -143,15 +145,14 @@ mysqli_close($connection);//close database connection after retreving data
 						</ul>
 
 					</div>
-					
-				</div>
-			</td>
+
+				</div></td>
 			<!-- Previous Treatments Details section End-->
 		</tr>
 
 		<!-- Complaint Details section -->
 		<tr style="height: 150px">
-			<td width="50%" valign="top"><label> <font color='#000000'
+			<td width="50%" valign="top" id="complaint_div"><label> <font color='#000000'
 					face='Tahoma' size='4'> Complaint </font><br /> <script
 						type="text/javascript">
                                                   numberOfComplaintList = 0;
@@ -169,16 +170,21 @@ mysqli_close($connection);//close database connection after retreving data
                                                     nextSelectObject.setAttribute("class", "complaints_class");
                                                     nextSelectObject.setAttribute("display", "none");                                                         
                                                     nextSelectObject.innerHTML = currentComplaintInnerHtml;  
+                                                    $(nextSelectObject).css({"width":"200px"});
                                                     var complaintParentElement = document.getElementById("complaint_div");
-                                                    //complaintParentElement.appendChild(nextSelectObject); 
+
                                                     var removeIcon = document.createElement("img");
                                                     removeIcon.setAttribute("src", "../../images/new/mm/remove.ico");
-                                                    removeIcon.setAttribute("onclick", "$(this).prev('select.complaints_class').remove();$(this).remove();");
+                                                    removeIcon.setAttribute("onclick", "$(this).next().remove();$(this).prev('select.complaints_class').remove();$(this).remove()");
+													//insert next element after previous element
+                                                    $("#appendNewComplaints").append(nextSelectObject,removeIcon,"<br/>");
 
-                                                    
-                                                    complaintParentElement.insertBefore(nextSelectObject, document.getElementById("new_complaint_input")); 
-                                                    complaintParentElement.insertBefore(removeIcon, document.getElementById("new_complaint_input"));
-                                                    
+
+
+
+                                                    //complaintParentElement.insertBefore(nextSelectObject, document.getElementById("new_complaint_input")); 
+                                                    //complaintParentElement.insertBefore(removeIcon, document.getElementById("new_complaint_input"));
+
                                                     $("#complaint"+numberOfComplaintList).fadeIn();
                                                     $("#complaint"+numberOfComplaintList).focus();
                                                     //$("#complaint"+(numberOfComplaintList-1)).prop("disabled","disabled");
@@ -188,27 +194,30 @@ mysqli_close($connection);//close database connection after retreving data
 
                                                   </script>
 
-					<div id="complaint_div"
-						style="height: auto; overflow: auto; border: none; margin: 0;">
+					<!-- div id="complaint_div"
+						style="height: auto; overflow: auto; border: none; margin: 0;" -->
 						<!--  Use disabled input for better UI don't remove. can't select next one without it  -->
-						<input type="text" disabled="disabled" style="display: none;" /> <select
+						<input type="text" disabled="disabled" style="display: none;" /> <select style="width: 200px;"
 							class="complaints_class" id="complaint0" name="complaint"
 							onchange="if (this.selectedIndex) onchangeComplaint(this);">
-							<option style='font-size: 13pt; width: 220px;'>Complaint</option>
+							<option style='font-size: 13pt;'>Complaint</option>
 							<?php
-							while ($complaint= mysql_fetch_assoc($complains_result)) {
-                                                            print "<option style='font-size: 13pt;width: 220px;'>".$complaint["complaint"]."</option>";
-
-                                                       }?>
+							while ( $complaint = mysql_fetch_assoc ( $complains_result ) ) {
+								print "<option style='font-size: 13pt;'>" . $complaint ["complaint"] . "</option>";
+							}
+							?>
 						</select>
+						
 						<!-- Old Text area replaced with new AJAX dropdown list -->
-						<!-- textarea name="textarea2" id="textarea2" rows="6" cols="40"></textarea -->
-			
-			</label> <br /> <input id="new_complaint_input"
+						<!-- textarea name="textarea2" id="textarea2" rows="6" cols="40"></textarea --></label>
+				<br /> 
+				<div id="appendNewComplaints">
+				</div>
+				<input id="new_complaint_input"
 				onclick="addNewComplaint('complaint')"
 				placeholder="Add or Remove complaint" style="margin-top: 10px;" />
-				</div>
-			</td>
+				<!--  /div -->
+				</td>
 
 
 
@@ -224,43 +233,40 @@ mysqli_close($connection);//close database connection after retreving data
 			<td valign="top" style="height: auto; width: 50%;"><label> <font
 					color='#000000' face='Tahoma' size='4'> Diagnoses </font><br /> <script
 						type="text/javascript">
-                                                  var numberOfDiagnosisList = 0;
-                                                  function onchangeDiagnosis(currentSelectList) {
-                                                                 //alert(currentSelectList.id);
-                                                    numberOfDiagnosisList +=1;
-                                                    //alert(numberOfDiagnosisList);
-                                                    var currentDiagnosisObject = document.getElementById(currentSelectList.id);
-                                                    var currentDiagnosisInnerHtml = currentDiagnosisObject.innerHTML;
-                                                    //alert(currentComplaintInnerHtml);
-                                                    var nextSelectObject = document.createElement("select"); 
-                                                    //alert("complaint"+numberOfComplaintList);
-                                                    
-                                                    nextSelectObject.setAttribute("id", "diagnosis"+numberOfDiagnosisList);
-                                                    nextSelectObject.setAttribute("onchange", "if (this.selectedIndex) onchangeDiagnosis(this);");
-                                                    nextSelectObject.setAttribute("class", "diagnosis_class");
-                                                    
-                                                    nextSelectObject.setAttribute("display", "none");                                                         
-                                                    nextSelectObject.innerHTML = currentDiagnosisInnerHtml;  
-                                                    var diagnosisParentElement = document.getElementById("diagnosis_div");
-                                                    //complaintParentElement.appendChild(nextSelectObject); 
-                                                    
-                                                    
-                                                    var removeIcon = document.createElement("img");
-                                                    removeIcon.setAttribute("src", "../../images/new/mm/remove.ico");
-                                                    removeIcon.setAttribute("onclick", "$(this).prev('select.diagnosis_class').remove();$(this).remove();");
-                                                   
-                                                    
-                                                    diagnosisParentElement.insertBefore(nextSelectObject, document.getElementById("new_diagnosis_input")); 
-                                                      
-                                                    diagnosisParentElement.insertBefore(removeIcon, document.getElementById("new_diagnosis_input"));
-                                                    
-                                                    
-                                                    $("#diagnosis"+numberOfDiagnosisList).fadeIn();
-                                                    $("#diagnosis"+numberOfDiagnosisList).focus();
-                                                    //$("#complaint"+(numberOfComplaintList-1)).prop("disabled","disabled");
-                                                    return 0;
-                              
-                                                            }
+							var numberOfDiagnosisList = 0;
+							function onchangeDiagnosis(currentSelectList) {
+								//alert(currentSelectList.id);
+								numberOfDiagnosisList += 1;
+								//alert(numberOfDiagnosisList);
+								var currentDiagnosisObject = document.getElementById(currentSelectList.id);
+								var currentDiagnosisInnerHtml = currentDiagnosisObject.innerHTML;
+								//alert(currentComplaintInnerHtml);
+								var nextSelectObject = document.createElement("select");
+								//alert("complaint"+numberOfComplaintList);
+
+								nextSelectObject.setAttribute("id", "diagnosis" + numberOfDiagnosisList);
+								nextSelectObject.setAttribute("onchange", "if (this.selectedIndex) onchangeDiagnosis(this);");
+								nextSelectObject.setAttribute("class", "diagnosis_class");
+
+								nextSelectObject.setAttribute("display", "none");
+								nextSelectObject.innerHTML = currentDiagnosisInnerHtml;
+								var diagnosisParentElement = document.getElementById("diagnosis_div");
+								//complaintParentElement.appendChild(nextSelectObject);
+
+								var removeIcon = document.createElement("img");
+								removeIcon.setAttribute("src", "../../images/new/mm/remove.ico");
+								removeIcon.setAttribute("onclick", "$(this).prev('select.diagnosis_class').remove();$(this).remove();");
+
+								diagnosisParentElement.insertBefore(nextSelectObject, document.getElementById("new_diagnosis_input"));
+
+								diagnosisParentElement.insertBefore(removeIcon, document.getElementById("new_diagnosis_input"));
+
+								$("#diagnosis" + numberOfDiagnosisList).fadeIn();
+								$("#diagnosis" + numberOfDiagnosisList).focus();
+								//$("#complaint"+(numberOfComplaintList-1)).prop("disabled","disabled");
+								return 0;
+
+							}
 
                                                   </script>
 					<div id="diagnosis_div"
@@ -271,17 +277,16 @@ mysqli_close($connection);//close database connection after retreving data
 							onchange="if (this.selectedIndex) onchangeDiagnosis(this);">
 							<option style='font-size: 13pt; width: 220px;'>Diagnosis</option>
 							<?php
-							while ($diagnosis= mysql_fetch_assoc($diagnosis_result)) {
-                                                            print "<option style='font-size: 13pt;width: 220px;'>".$diagnosis["diagnosis"]."</option>";
-
-                                                       }?>
+							while ( $diagnosis = mysql_fetch_assoc ( $diagnosis_result ) ) {
+								print "<option style='font-size: 13pt;width: 220px;'>" . $diagnosis ["diagnosis"] . "</option>";
+							}
+							?>
 						</select><br /> <input onclick="addNewComplaint('diagnosis')"
 							id="new_diagnosis_input" placeholder="Add or Remove Diagnosis"
 							style="margin-top: 10px;" />
 
 					</div> <!-- Old textarea replaced with ajax dropdown menu --> <!-- textarea name="textarea3" id="textarea3" rows="6" cols="40"></textarea -->
-			</label>
-			</td>
+			</label></td>
 
 		</tr>
 
@@ -297,94 +302,91 @@ mysqli_close($connection);//close database connection after retreving data
 		<!-- ___________________________________________Multi Treatment Selection JS function__________________________________________________ -->
 
 		<script type="text/javascript">
-                                                  var numberOfTreatmentList = 0;
-                                                  function onchangeTreatment(currentSelectList) {
-													//alert($("#treatmentFrequency0").html());
-													
-													numberOfTreatmentList +=1;
-                                                    //alert(numberOfDiagnosisList);
-                                                    var currentTreatmentObject = document.getElementById(currentSelectList.id);
-                                                    var currentTreatmentInnerHtml = currentTreatmentObject.innerHTML;
-                                                    //alert(currentComplaintInnerHtml);
-                                                    var nextSelectObject = document.createElement("select"); 
-                                                    //alert("complaint"+numberOfComplaintList);
-                                                    //additional inputs related to drug
-                                                    var nextinputObject = document.createElement("input"); 
-                                                    var nextFrequencyObject = document.createElement("select"); 
-                                                    var nextAcPcObject = document.createElement("select"); 
-                                                  
-                                                    // Set attributes for treatment selector
-                                                    nextSelectObject.setAttribute("id", "treatment"+numberOfTreatmentList);
-                                                    nextSelectObject.setAttribute("onchange", "if (this.selectedIndex) onchangeTreatment(this);");
-                                                    nextSelectObject.setAttribute("class", "treatment_class");
+			var numberOfTreatmentList = 0;
+			function onchangeTreatment(currentSelectList) {
+				//alert($("#treatmentFrequency0").html());
 
-                                                 // Set attributes for dosage input
-                                                 nextinputObject.setAttribute("id", "treatmentDosage"+numberOfTreatmentList);
-                                                 nextinputObject.setAttribute("class", "treatment_dosage_class");
-                                                 nextinputObject.setAttribute("size", "10");
-                                                 
-                                                 
-                                                 // Set attributes for Frequency selector
-                                                    nextFrequencyObject.setAttribute("id", "treatmentFrequency"+numberOfTreatmentList);
-                                                    nextFrequencyObject.setAttribute("class", "treatment_frequency_class");
+				numberOfTreatmentList += 1;
+				//alert(numberOfDiagnosisList);
+				var currentTreatmentObject = document.getElementById(currentSelectList.id);
+				var currentTreatmentInnerHtml = currentTreatmentObject.innerHTML;
+				//alert(currentComplaintInnerHtml);
+				var nextSelectObject = document.createElement("select");
+				//alert("complaint"+numberOfComplaintList);
+				//additional inputs related to drug
+				var nextinputObject = document.createElement("input");
+				var nextFrequencyObject = document.createElement("select");
+				var nextAcPcObject = document.createElement("select");
 
-                                                 
-                                                 // Set attributes for AcPc selector
-                                                 nextAcPcObject.setAttribute("id", "treatmentAcPc"+numberOfTreatmentList);
-                                                 nextAcPcObject.setAttribute("class", "treatment_acpc_class");
-                                                 
-                                                 
-                                                 
-                                                    nextSelectObject.setAttribute("display", "none");                                                         
+				// Set attributes for treatment selector
+				nextSelectObject.setAttribute("id", "treatment" + numberOfTreatmentList);
+				nextSelectObject.setAttribute("onchange", "if (this.selectedIndex) onchangeTreatment(this);");
+				nextSelectObject.setAttribute("class", "treatment_class");
 
-                                                    nextAcPcObject.setAttribute("display", "none");                                                         
-                                                    nextFrequencyObject.setAttribute("display", "none");                                                         
-                                                    nextinputObject.setAttribute("display", "none");                                                         
+				// Set attributes for dosage input
+				nextinputObject.setAttribute("id", "treatmentDosage" + numberOfTreatmentList);
+				nextinputObject.setAttribute("class", "treatment_dosage_class");
+				nextinputObject.setAttribute("size", "10");
 
+				// Set attributes for Frequency selector
+				nextFrequencyObject.setAttribute("id", "treatmentFrequency" + numberOfTreatmentList);
+				nextFrequencyObject.setAttribute("class", "treatment_frequency_class");
 
-													//margin-left: ;margin-right: 
-                                                    $(nextAcPcObject).css({"margin":"2%","margin-left": "10%","margin-right":"10%"});                                                         
-                                                    $(nextFrequencyObject).css("margin","2%");                                                         
-                                                    $(nextinputObject).css({"margin":"2%","margin-left": "10%","margin-right":"10%"});
-													//$(nextinputObject).css("margin","2%");
+				// Set attributes for AcPc selector
+				nextAcPcObject.setAttribute("id", "treatmentAcPc" + numberOfTreatmentList);
+				nextAcPcObject.setAttribute("class", "treatment_acpc_class");
 
-													
-                                                    nextSelectObject.innerHTML = currentTreatmentInnerHtml;
-                                                    nextFrequencyObject.innerHTML = $("#treatmentFrequency0").html();
-                                                    nextAcPcObject.innerHTML = $("#treatmentAcPc0").html();
-                                                    
-                                                    
-                                                    
-                                                    //complaintParentElement.appendChild(nextSelectObject); 
-                                                    
-                                                    /*
-                                                    Remove icon not in use due to high complexcity- develop if u can :)
-                                                    var removeIcon = document.createElement("img");
-                                                    removeIcon.setAttribute("src", "../../images/new/mm/remove.ico");
-                                                    removeIcon.setAttribute("onclick", "$(this).prev('select.diagnosis_class').remove();$(this).remove();");
-                                                    diagnosisParentElement.insertBefore(removeIcon, document.getElementById("new_diagnosis_input"));
-                                                    */
+				nextSelectObject.setAttribute("display", "none");
 
-                                                    $(nextSelectObject).insertAfter($("#treatment"+(numberOfTreatmentList - 1)));
-                                                    $(nextFrequencyObject).insertAfter($("#treatmentFrequency"+(numberOfTreatmentList - 1)));
-                                                    $(nextAcPcObject).insertAfter($("#treatmentAcPc"+(numberOfTreatmentList - 1)));
-                                                    $(nextinputObject).insertAfter($("#treatmentDosage"+(numberOfTreatmentList - 1)));
-                                                    
-                                                    //diagnosisParentElement.insertBefore(nextSelectObject, document.getElementById("new_diagnosis_input")); 
-                                                      
-                                                    
-                                                    
-                                                    
-                                                    $("#treatment"+numberOfTreatmentList).fadeIn("slow");
-                                                    
-                                                    $("#treatmentFrequency"+numberOfTreatmentList).fadeIn("slow");
-                                                    $("#treatmentAcPc"+numberOfTreatmentList).fadeIn("slow");
-                                                    $("#treatmentDosage"+numberOfTreatmentList).fadeIn("slow");
-                                                    
-                                                    //$("#complaint"+(numberOfComplaintList-1)).prop("disabled","disabled");
-                                                    return 0;
-                              
-                                                            }
+				nextAcPcObject.setAttribute("display", "none");
+				nextFrequencyObject.setAttribute("display", "none");
+				nextinputObject.setAttribute("display", "none");
+
+				//margin-left: ;margin-right:
+				$(nextAcPcObject).css({
+					"margin" : "2%",
+					"margin-left" : "10%",
+					"margin-right" : "10%"
+				});
+				$(nextFrequencyObject).css("margin", "2%");
+				$(nextinputObject).css({
+					"margin" : "2%",
+					"margin-left" : "10%",
+					"margin-right" : "10%"
+				});
+				//$(nextinputObject).css("margin","2%");
+
+				nextSelectObject.innerHTML = currentTreatmentInnerHtml;
+				nextFrequencyObject.innerHTML = $("#treatmentFrequency0").html();
+				nextAcPcObject.innerHTML = $("#treatmentAcPc0").html();
+
+				//complaintParentElement.appendChild(nextSelectObject);
+
+				/*
+				 Remove icon not in use due to high complexcity- develop if u can :)
+				 var removeIcon = document.createElement("img");
+				 removeIcon.setAttribute("src", "../../images/new/mm/remove.ico");
+				 removeIcon.setAttribute("onclick", "$(this).prev('select.diagnosis_class').remove();$(this).remove();");
+				 diagnosisParentElement.insertBefore(removeIcon, document.getElementById("new_diagnosis_input"));
+				 */
+
+				$(nextSelectObject).insertAfter($("#treatment" + (numberOfTreatmentList - 1)));
+				$(nextFrequencyObject).insertAfter($("#treatmentFrequency" + (numberOfTreatmentList - 1)));
+				$(nextAcPcObject).insertAfter($("#treatmentAcPc" + (numberOfTreatmentList - 1)));
+				$(nextinputObject).insertAfter($("#treatmentDosage" + (numberOfTreatmentList - 1)));
+
+				//diagnosisParentElement.insertBefore(nextSelectObject, document.getElementById("new_diagnosis_input"));
+
+				$("#treatment" + numberOfTreatmentList).fadeIn("slow");
+
+				$("#treatmentFrequency" + numberOfTreatmentList).fadeIn("slow");
+				$("#treatmentAcPc" + numberOfTreatmentList).fadeIn("slow");
+				$("#treatmentDosage" + numberOfTreatmentList).fadeIn("slow");
+
+				//$("#complaint"+(numberOfComplaintList-1)).prop("disabled","disabled");
+				return 0;
+
+			}
 
                                                   </script>
 
@@ -410,10 +412,10 @@ mysqli_close($connection);//close database connection after retreving data
 								style="font-size: 13pt; width: 220px;">Treatment</option>
 
 							<?php
-							while ($treatment= mysql_fetch_assoc($treatment_result)) {
-                                                       print "<option style='font-size: 13pt;width: 220px;'>".$treatment["treatment_type"]."</option>";
-
-                                                  }?>
+							while ( $treatment = mysql_fetch_assoc ( $treatment_result ) ) {
+								print "<option style='font-size: 13pt;width: 220px;'>" . $treatment ["treatment_type"] . "</option>";
+							}
+							?>
 							<option style="font-size: 13pt; width: 220px; color: red;">No
 								Treatment</option>
 
@@ -480,17 +482,6 @@ mysqli_close($connection);//close database connection after retreving data
 
 				</div> <!-- _______________________________________ Treatment AC/PC selector End _______________________________________ -->
 
-				<div
-					style="position: relative; float: left; height: auto; width: 18%;"
-					align="center">
-					<!-- _______________________________________ Treatment Other Notes selector _______________________________________ -->
-					<p style="margin: 0; padding: 0;">Other Notes</p>
-					<textarea id="treatmentOtherNotes" rows="3" cols="22"
-						placeholder="Enter other notes....."></textarea>
-
-				</div> <!-- _______________________________________ Treatment Other Notes selector End _______________________________________ -->
-
-
 				<!-- ____________________________ Treatments to Patients End ____________________________ -->
 		
 		</tr>
@@ -501,27 +492,39 @@ mysqli_close($connection);//close database connection after retreving data
 
 		<tr>
 			<td height="155" width="50%" align="center" valign="top"><label> <!-- ______________________________Submit Pations record to Database Submit Button and show result______________________________ -->
-					<table border="1" width="80%">
+
+
+					<div
+						style="position: relative; float: left; height: auto; width: 18%;"
+						align="center">
+						<!-- _______________________________________ Treatment Other Notes selector _______________________________________ -->
+						<p style="margin: 0px;">Other&nbspNotes</p>
+						<textarea id="treatmentOtherNotes" rows="3" cols="22"
+							placeholder="Enter other notes....."></textarea>
+
+					</div> <!-- _______________________________________ Treatment Other Notes selector End _______________________________________ -->
+
+
+
+					<table border="1" width="80%" style="margin-top: 110px;">
 						<div>
 							<tr>
 								<td width="30%" align="center" bgcolor="#125489" rowspan="2"><input
-									type="button" name="submitTreatment" id="submitTreatment"
-									value="submit Treatment" class="submit" />
+									style="cursor: pointer;" type="button" name="submitTreatment"
+									id="submitTreatment" value="submit Treatment" class="submit" />
 								</td>
 								<td bgcolor="#009977" rowspan="2" colspan="2"><span
 									class="error" style="display: none"> Please Enter Valid Data </span>
 									<span class="success" style="display: none"> Treatment
 										Successfully sent... </span> <!-- Remove onlick new treatment page coz new ajax page is available -->
 									<!-- a href="doctor_treatment.php" style="color: #0066CC; font-weight: bold"> Click For a New
-											Treatment </a  -->
-								</td>
+											Treatment </a  --></td>
 							</tr>
 
 						</div>
 
 					</table> <!-- ______________________________Submit Pations record to Database Submit Button and show result End______________________________ -->
-			</label>
-			</td>
+			</label></td>
 			<!-- ______________________________Submit Pateions record to Database End______________________________ -->
 
 
@@ -552,8 +555,7 @@ mysqli_close($connection);//close database connection after retreving data
 								<option value="UFR">UFR</option>
 
 						</select>
-							<button onclick="submitInvestigation()">Submit</button>
-						</td>
+							<button onclick="submitInvestigation()">Submit</button></td>
 					</tr>
 				</table>
 

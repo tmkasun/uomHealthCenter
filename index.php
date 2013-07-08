@@ -82,11 +82,10 @@ if ($_SESSION["USERID"]) {
 <script src="./javascripts/new/jquery-1.8.3.js"></script>
 
 <script src="./javascripts/new/jquery-ui-1.9.2.js"></script>
-<script src="./javascripts/new/jquery-2.0.0-vsdoc.js"></script>
 
 <script type="text/javascript">
 	//block tring after 3 attempt
-
+	
 	var try_count = 0;
 	function trys() {
 		//alert("testing");

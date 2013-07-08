@@ -294,14 +294,14 @@ function addNewComplaint(requestType) {
 
 						var html = '<div style="width: 70%;margin-left: auto;margin-right: auto;color:blue;position: relative;">Current '
 								+ requestType + ' list</div><br/>';
-						html += '<div id="ajaxRetrievedDetails" style="width: 90%;margin-left: auto;margin-right: auto;color:black;position: relative;overflow: auto;height: 200px">';
+						html += '<div id="ajaxRetrievedDetails" onmouseout="enableDrabbable()" onmouseover="disableDraggable()" style="width: 90%;margin-left: auto;margin-right: auto;color:black;position: relative;overflow: auto;height: 200px">';
 						for ( var information in result) {
 							for ( var data in result[information]) {
 								html += "<font class ='"
 										+ result[information][data]
 										+ "' >"
 										+ result[information][data]
-										+ "<img alt='remove this' style='position:relative;margin-left:25px;top:+7px' src= '../../images/new/mm/remove-icon.png' id='"
+										+ "<img alt='remove this' style='cursor: pointer;position:relative;margin-left:25px;top:+7px' src= '../../images/new/mm/remove-icon.png' id='"
 										+ result[information][data]
 										+ "' onClick ='removeThisInformation(this)' requestType = '"
 										+ requestType + "' /></font><br/>";
@@ -311,7 +311,7 @@ function addNewComplaint(requestType) {
 
 						html += "</div><br/><input style='position:relative;margin-left:25px;float:left;' id='newInformation'  inputType = '"
 								+ requestType
-								+ "' type='text'/><img style='position:relative;float:left;margin-left:20px;' src= '../../images/new/mm/add-icon.png'  onClick ='addThisInformation(this)' /><br/>";
+								+ "' type='text'/><img style='cursor: pointer;position:relative;float:left;margin-left:20px;' src= '../../images/new/mm/add-icon.png'  onClick ='addThisInformation(this)' /><br/>";
 
 						$("#thisTreatmentDetails").html(html);
 						$("#newInformation").attr(
@@ -353,7 +353,7 @@ function ajaxReloadThisList(requestType) {
 						+ result[information][data]
 						+ "' >"
 						+ result[information][data]
-						+ "<img alt='remove this' style='position:relative;margin-left:25px;top:+7px' src= '../../images/new/mm/remove-icon.png' id='"
+						+ "<img alt='remove this' style='cursor: pointer;position:relative;margin-left:25px;top:+7px' src= '../../images/new/mm/remove-icon.png' id='"
 						+ result[information][data]
 						+ "' onClick ='removeThisInformation(this)' requestType = '"
 						+ requestType + "' /></font><br/>";
@@ -365,4 +365,18 @@ function ajaxReloadThisList(requestType) {
 
 	});
 
+}
+
+//disable Draggable  ability whe scrolling 
+
+function disableDraggable() {
+	$("#pre_treatment_details").draggable("disable");
+	$("#pre_treatment_details").css({ opacity: 1 });
+	
+	//background: rgba(255, 255, 199, 1);
+}
+
+function enableDrabbable() {
+	$("#pre_treatment_details").draggable("enable");
+	$("#pre_treatment_details").css({ opacity: 1 });
 }
