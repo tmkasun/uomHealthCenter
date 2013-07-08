@@ -294,7 +294,7 @@ function addNewComplaint(requestType) {
 
 						var html = '<div style="width: 70%;margin-left: auto;margin-right: auto;color:blue;position: relative;">Current '
 								+ requestType + ' list</div><br/>';
-						html += '<div id="ajaxRetrievedDetails" onmouseout="enableDrabbable()" onmouseover="disableDraggable()" style="width: 90%;margin-left: auto;margin-right: auto;color:black;position: relative;overflow: auto;height: 200px">';
+						html += '<div id="ajaxRetrievedDetails" onmouseout="enableDrabbable()" onmouseover="disableDraggable()" style="background: rgba(245, 240, 150, 1);width: 90%;margin-left: auto;margin-right: auto;color:black;position: relative;overflow: auto;height: 200px">';
 						for ( var information in result) {
 							for ( var data in result[information]) {
 								html += "<font class ='"
