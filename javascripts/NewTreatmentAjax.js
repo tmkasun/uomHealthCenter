@@ -1,4 +1,13 @@
-﻿// global Variables
+﻿/*
+ * This JS file if for the functions in new_doctor_treatment.php and it's loaded php file
+ * Completly developed by Faculty of information technology university of moratuwa
+ * 			#Kasun Thennakoon
+ * 			#Akila Sandakelum
+ * 
+ * 
+ */
+
+// global Variables
 var regNo = $("#regNo");
 var loading = $("#loading");
 var messageList = $(".content > ul");
@@ -19,7 +28,7 @@ var investigation;
 // on submit event
 $("#submitTreatment").click(function() {
 	// alert($("#treatmentOtherNotes").val());
-
+	// return 0;
 	if (checkForm()) {
 
 		var _refDoctor = refDoctor.attr("value");
@@ -72,7 +81,7 @@ $("#submitTreatment").click(function() {
 	return false;
 });
 
-// check if all fields are filled
+// check if all fields are filled form validation method
 function checkForm() {
 	complaints = [];
 	diagnoses = [];
@@ -121,26 +130,27 @@ function checkForm() {
 
 	}
 
-	// alert(JSON.stringify(treatment));
-
+/*	alert(JSON.stringify(treatment));
+	return 0;*/
 	var countComplaint = 0;
-	$(".complaints_class").each(function() {
+	$(".complaint_class").each(function() {
 		countComplaint += 1;
 		currentComplaint = document.getElementById(this.id).value;
-		// alert(currentComplaint);
-		if (currentComplaint != "Complaint") {
+		alert(currentComplaint);
+		if (currentComplaint != "complaint") {
+			alert("Put to DB");
 			complaints.push(currentComplaint);
 		}
 	});
-	// complaint = $("#complaint :selected").text();
-	// alert(complaint);
-
+	/*//complaint = $("#complaint :selected").text();
+	alert(complaints);
+	return	0;*/
 	var countDiagnosis = 0;
 	$(".diagnosis_class").each(function() {
 		countDiagnosis += 1;
 		currentDiagnosis = document.getElementById(this.id).value;
 		// alert(currentDiagnosis);
-		if (currentDiagnosis != "Diagnosis") {
+		if (currentDiagnosis != "diagnosis") {
 			diagnoses.push(currentDiagnosis);
 		}
 	});
@@ -199,13 +209,13 @@ $(document).ready(function() {
 
 // retrive student treatment information onclick time stamp in shoutbox
 function preTreatmentDetails(thisRow) {
-	//alert("oks");
-	//return 0;
+	// alert("oks");
+	// return 0;
 	var thisRowId = thisRow.id;
-	//alert(thisRowId);
-	//alert(thisRowId+_regNo);
-	//return 0;
-	
+	// alert(thisRowId);
+	// alert(thisRowId+_regNo);
+	// return 0;
+
 	$.ajax({
 		url : 'new_getTreatmentInfo.php',
 		type : "POST",
@@ -329,54 +339,273 @@ function addNewComplaint(requestType) {
 
 // refresh list in complints , treatments, and diagnoses on keypress when doctor
 // tries to add or remove new or excisting abouve item
-function ajaxReloadThisList(requestType) {
-	//alert($("#newInformation").val());
-	//alert(requestType);
-	//return 0;
+
+function ajaxReloadThisList(requestType) { // returnHtmlStyle
+	// is normal <P>
+	// return or each
+	// item as a
+
+	// alert("ok press");
+	// <option> style
+	// alert($("#newInformation").val());
+	// alert(requestType);
+	// return 0;
 
 	var currentInputValue = $("#newInformation").val();
-	$.ajax({
-		url : 'new_details_from_database.php',
-		type : "POST",
-		dataType : "JSON",		
-		data : {
-			"requestType" : requestType,
-			"method" : "search",
-			"currentInputValue" :currentInputValue
-		}
-	}).done(function(result) {
-		//alert(result);
-		var html="";
-		for ( var information in result) {
-			for ( var data in result[information]) {
-				html += "<font class ='"
-						+ result[information][data]
-						+ "' >"
-						+ result[information][data]
-						+ "<img alt='remove this' style='cursor: pointer;position:relative;margin-left:25px;top:+7px' src= '../../images/new/mm/remove-icon.png' id='"
-						+ result[information][data]
-						+ "' onClick ='removeThisInformation(this)' requestType = '"
-						+ requestType + "' /></font><br/>";
-			}
+	$
+			.ajax({
+				url : 'new_details_from_database.php',
+				type : "POST",
+				dataType : "JSON",
+				data : {
+					"requestType" : requestType,
+					"method" : "search",
+					"currentInputValue" : currentInputValue
+				}
+			})
+			.done(
+					function(result) {
+						// alert(result);
+						var html = "";
+						for ( var information in result) {
+							for ( var data in result[information]) {
+								html += "<font class ='"
+										+ result[information][data]
+										+ "' >"
+										+ result[information][data]
+										+ "<img alt='remove this' style='cursor: pointer;position:relative;margin-left:25px;top:+7px' src= '../../images/new/mm/remove-icon.png' id='"
+										+ result[information][data]
+										+ "' onClick ='removeThisInformation(this)' requestType = '"
+										+ requestType + "' /></font><br/>";
+							}
 
-		}
-		$("#ajaxRetrievedDetails").html(html);
-		
+						}
+						$("#ajaxRetrievedDetails").html(html);
 
-	});
+					});
 
 }
 
-//disable Draggable  ability whe scrolling 
+// disable Draggable ability whe scrolling
 
 function disableDraggable() {
 	$("#pre_treatment_details").draggable("disable");
-	$("#pre_treatment_details").css({ opacity: 1 });
-	
-	//background: rgba(255, 255, 199, 1);
+	$("#pre_treatment_details").css({
+		opacity : 1
+	});
+
+	// background: rgba(255, 255, 199, 1);
 }
 
+// enable draggable ability when mouse not over on the scrolling area
 function enableDrabbable() {
 	$("#pre_treatment_details").draggable("enable");
-	$("#pre_treatment_details").css({ opacity: 1 });
+	$("#pre_treatment_details").css({
+		opacity : 1
+	});
+}
+
+// add new complint, diagnosis or treatment to database via ajax call
+
+function addThisInformation(inputValue) {
+
+	var data = $("#newInformation").val();
+	// var requestType =
+	// document.getElementById("newInformation").getAttribute("inputType");
+	var requestType = $("#newInformation").attr("inputType");
+
+	// alert("asd");
+	$.ajax({
+		url : 'new_details_from_database.php',
+		type : "POST",
+		data : {
+			"requestType" : requestType,
+			"method" : "insert",
+			"data" : data
+		}
+	}).done(function(result) {
+		if(requestType == "treatment_type"){
+			alert("Need to impliment this ");
+		}
+		
+		loadOptionsFromDb(requestType);
+		close_preTreatmentDetails();
+		alert(data + " added Successfully");
+		// var parent = document.getElementById(elementId);
+
+	}
+
+	);
+
+}
+
+// remove excisting complint, diagnosis or treatment to database via ajax call
+
+function removeThisInformation(informationID, requestType) {
+
+	// alert(informationID.id+ "sadsaf"+
+	// document.getElementById(informationID.id).getAttribute("requestType"));
+	var requestType = document.getElementById(informationID.id).getAttribute(
+			"requestType");
+
+	$.ajax({
+		url : 'new_details_from_database.php',
+		type : "POST",
+		data : {
+			"requestType" : requestType,
+			"method" : "delete",
+			"data" : informationID.id
+		}
+	}).done(function(result) {
+		// alert(result);
+		$("." + informationID.id).fadeOut();
+		// loadTreatmentPage();
+		alert(informationID.id + " has been removed Successfully");
+	}
+
+	);
+
+}
+
+/*
+ * load the containt of the <Select> element wich are options from the database
+ * in each new selector addition and when doctor add a new details to database
+ */
+
+// Global variables for assing ID's
+numberOfComplaintList = 0;
+numberOfDiagnosisList = 0;
+numberOfTreatmentList = 0;
+
+function loadOptionsFromDb(requestType) { // returnHtmlStyle
+	
+//	alert(requestType+"_class"); 
+	/*
+	 * Define common elements and attribute for all complaints, diagnosis and
+	 * treatment selectors
+	 */
+	var nextSelectObject = $("<select></select>");
+
+	$(nextSelectObject).css({
+		"width" : "200px"
+	});
+
+	var removeIcon = $("<img></img>");
+
+	/*
+	 * //have to move this to specific bulid block in switch case
+	 * removeIcon.attr({ "src": "../../images/new/mm/remove.ico", "onclick" :
+	 * "numberOfComplaintList-=1;$(this).next().remove();$(this).prev('select."+requestType+"_class').remove();$(this).remove()"
+	 * });
+	 */
+
+	$.ajax({
+				url : 'new_details_from_database.php',
+				type : "POST",
+				dataType : "JSON",
+				data : {
+					"requestType" : requestType,
+					"method" : "retrive"
+				}
+			})
+			.done(
+					function(result) {
+						/*
+						 * alert(result); return 0;
+						 */
+
+						var newOptionList = $("<option></option>");
+						$(newOptionList).text(requestType);
+						$(nextSelectObject).append(newOptionList);
+						// newOptionList.css("font-size","13pt");
+						for ( var information in result) {
+							for ( var data in result[information]) {
+								var newOption = $("<option></option>");
+								$(newOption).text(result[information][data]);
+								// font-size: 13pt
+								$(newOption).css({
+									"font-size" : "13pt"
+								});
+								$(nextSelectObject).append(newOption);
+							}
+						}
+
+						// alert(newOptionList.html());
+						// return 0;
+
+						// $(nextSelectObject).append(newOptionList);
+
+						switch (requestType) {
+						case "complaint":
+							// alert("asdsa");
+							numberOfComplaintList += 1;
+
+							nextSelectObject
+									.attr({
+										"id" : requestType
+												+ numberOfComplaintList,
+										"onchange" : "if (this.selectedIndex) loadOptionsFromDb('"
+												+ requestType + "');",
+										"class" : requestType + "_class",
+										"display" : "none"
+									});
+
+							removeIcon
+									.attr({
+										"src" : "../../images/new/mm/remove.ico",
+										"onclick" : "$(this).next().remove();$(this).prev('select."
+												+ requestType
+												+ "_class').remove();$(this).remove()"
+									});
+
+							$("#appendNewComplaints").append(nextSelectObject,
+									removeIcon, "<br/>");
+							$("#"+requestType + numberOfComplaintList).fadeIn();
+							$("#"+requestType+ numberOfComplaintList).focus();
+
+							break;
+						case "diagnosis":
+	/*						alert(numberOfDiagnosisList);
+							alert(nextSelectObject);
+	*/						
+							numberOfDiagnosisList += 1;
+							nextSelectObject
+									.attr({
+										"id" : requestType
+												+ numberOfDiagnosisList,
+										"onchange" : "if (this.selectedIndex) loadOptionsFromDb('"
+												+ requestType + "');",
+										"class" : requestType + "_class",
+										"display" : "none"
+									});
+
+							removeIcon
+									.attr({
+										"src" : "../../images/new/mm/remove.ico",
+										"onclick" : "$(this).next().remove();$(this).prev('select."
+												+ requestType
+												+ "_class').remove();$(this).remove()"
+									});
+							//numberOfDiagnosisList
+							$("#appendNewDiagnoses").append(nextSelectObject,
+									removeIcon, "<br/>");
+							$("#"+requestType+ numberOfDiagnosisList).fadeIn();
+							$("#"+requestType + numberOfDiagnosisList).focus();
+
+
+							
+							break;
+
+						case "treatment":
+							
+							/*numberOfTreatmentList
+							*/
+							
+							break;
+
+						}
+
+						// numberOfComplaintList +=1;
+					});
+
 }

@@ -1,5 +1,4 @@
 <?php
-
 session_start ();
 // Start session
 
@@ -9,9 +8,9 @@ if ($_SESSION ['LoginStatus'] != "2") {
 }
 
 if ($_POST) {
-	extract( $_POST );
+	extract ( $_POST );
 	$patientIndex = $_POST ["StudentID"];
-	//session_register( "PATIENT_ID" );
+	// session_register( "PATIENT_ID" );
 	$_SESSION ['PATIENT_ID'] = $_POST ["StudentID"];
 } else if (isset ( $_GET ['id'] )) {
 	$_SESSION ['PATIENT_ID'] = $_GET ['id'];
@@ -21,8 +20,11 @@ if ($_POST) {
 <!-- jquery-1.9.1.js -->
 <script src="../../javascripts/new/js/jquery-1.9.1.js"></script>
 <script src="../../javascripts/TreatmentAjax.js"></script>
+<script src="../../javascripts/NewTreatmentAjax.js"></script>
+
 <script src="../../javascripts/new/js/jquery-ui-1.10.3.custom.min.js"></script>
-<link href="../../css/newJQ/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css" />
+<link href="../../css/newJQ/jquery-ui-1.10.3.custom.min.css"
+	rel="stylesheet" type="text/css" />
 
 
 <style type="text/css">
@@ -44,10 +46,10 @@ if ($_POST) {
 }
 </style>
 </head>
-<?php 
+<?php
 /*
-       * new AJAX dropdown menu
-       */
+ * new AJAX dropdown menu
+ */
 include_once ('../../inc/config.php');
 $complains_list_query = "select * from complaint ORDER BY complaint ASC";
 $diagnosis_list_query = "select * from diagnosis ORDER BY diagnosis ASC";
@@ -70,12 +72,14 @@ mysqli_close ( $connection );
 	<!-- __________________________ This is the common div for display each treatment details __________________________ -->
 	<div id="pre_treatment_details"
 		style="position: fixed; width: 70%; height: auto; margin-left: 15%; margin-right: 15%; background: rgba(255, 255, 199, 1); margin-top: 0%; border-radius: 12px; z-index: 50; display: none; box-shadow: 0px 0px 20px 1px #000000;">
-		<img style="cursor: pointer;float: right;margin-right: 10px;margin-top: 10px;" onclick="close_preTreatmentDetails()"
-			alt="close" src="../../images/new/mm/no.ico"
+		<img
+			style="cursor: pointer; float: right; margin-right: 10px; margin-top: 10px;"
+			onclick="close_preTreatmentDetails()" alt="close"
+			src="../../images/new/mm/no.ico"
 			style="position: relative; float: right;">
-	
+
 	</div>
-	
+
 	<script type="text/javascript">
 $(function() {
 	$("#pre_treatment_details").draggable();
@@ -89,14 +93,14 @@ $(function() {
 		onclick="slideup()" class="clear_bt" value="Go Back">Back</button>
 
 	<table id="treatmentTable" border="1"
-		style="margin-left: 12%; background: rgba(100, 200, 255, 0.3); border-radius: 30px; border: none; height: auto;width: 80%">
+		style="margin-left: 12%; background: rgba(100, 200, 255, 0.3); border-radius: 30px; border: none; height: auto; width: 80%">
 
 		<tr valign="top">
 			<td width="50%"><img id="profile_pic"
 				onmouseover="hover_profilepic_message()"
 				onclick="window.open('<?php echo $_SESSION["hqImageUrl"]; ?>','location=no','menubar=no','toolbar=no','titlebar=no','status=no');"
 				src="<?php print $_SESSION["imageUrl"]; ?>" width="20%" height="40%" />
- <!-- ______________________________Patients allergies Details______________________________ -->
+				<!-- ______________________________Patients allergies Details______________________________ -->
 				<div
 					style="background-color: red; margin: 0, auto; width: 30%; float: right; border-radius: 10px; box-shadow: 0px 0px 10px 1px #545454; margin-right: 25%;">
 					<span style="position: relative; float: left;">Allergies Details</span>
@@ -152,72 +156,30 @@ $(function() {
 
 		<!-- Complaint Details section -->
 		<tr style="height: 150px">
-			<td width="50%" valign="top" id="complaint_div"><label> <font color='#000000'
-					face='Tahoma' size='4'> Complaint </font><br /> <script
+			<td width="50%" valign="top" id="complaint_div"><label> <font
+					color='#000000' face='Tahoma' size='4'> Complaint </font><br /> 
+					<?php
+					/*
+					 * Use disabled input for better UI don't remove. can't select next one without it
+					 */
+					?>
+					<input type="text" disabled="disabled" style="display: none;" /> <script
 						type="text/javascript">
-                                                  numberOfComplaintList = 0;
-                                                  function onchangeComplaint(currentSelectList) {
-													//alert(currentSelectList.id);
-													numberOfComplaintList +=1;
-                                                    //alert(numberOfComplaintList);
-                                                    var currentComplaintObject = document.getElementById(currentSelectList.id);
-                                                    var currentComplaintInnerHtml = currentComplaintObject.innerHTML;
-                                                    //alert(currentComplaintInnerHtml);
-                                                    var nextSelectObject = document.createElement("select"); 
-                                                    //alert("complaint"+numberOfComplaintList);
-                                                    nextSelectObject.setAttribute("id", "complaint"+numberOfComplaintList);
-                                                    nextSelectObject.setAttribute("onchange", "if (this.selectedIndex) onchangeComplaint(this);");
-                                                    nextSelectObject.setAttribute("class", "complaints_class");
-                                                    nextSelectObject.setAttribute("display", "none");                                                         
-                                                    nextSelectObject.innerHTML = currentComplaintInnerHtml;  
-                                                    $(nextSelectObject).css({"width":"200px"});
-                                                    var complaintParentElement = document.getElementById("complaint_div");
-
-                                                    var removeIcon = document.createElement("img");
-                                                    removeIcon.setAttribute("src", "../../images/new/mm/remove.ico");
-                                                    removeIcon.setAttribute("onclick", "$(this).next().remove();$(this).prev('select.complaints_class').remove();$(this).remove()");
-													//insert next element after previous element
-                                                    $("#appendNewComplaints").append(nextSelectObject,removeIcon,"<br/>");
-
-
-
-
-                                                    //complaintParentElement.insertBefore(nextSelectObject, document.getElementById("new_complaint_input")); 
-                                                    //complaintParentElement.insertBefore(removeIcon, document.getElementById("new_complaint_input"));
-
-                                                    $("#complaint"+numberOfComplaintList).fadeIn();
-                                                    $("#complaint"+numberOfComplaintList).focus();
-                                                    //$("#complaint"+(numberOfComplaintList-1)).prop("disabled","disabled");
-                                                    return 0;
-                              
-    												}
-
-                                                  </script>
-
-					<!-- div id="complaint_div"
-						style="height: auto; overflow: auto; border: none; margin: 0;" -->
-						<!--  Use disabled input for better UI don't remove. can't select next one without it  -->
-						<input type="text" disabled="disabled" style="display: none;" /> <select style="width: 200px;"
-							class="complaints_class" id="complaint0" name="complaint"
-							onchange="if (this.selectedIndex) onchangeComplaint(this);">
-							<option style='font-size: 13pt;'>Complaint</option>
-							<?php
-							while ( $complaint = mysql_fetch_assoc ( $complains_result ) ) {
-								print "<option style='font-size: 13pt;'>" . $complaint ["complaint"] . "</option>";
-							}
-							?>
-						</select>
+					loadOptionsFromDb('complaint');
+					</script>
+					
+						<?php
+						/*
+						 * Old Text area replaced with new AJAX dropdown list
+						 */
+						?>
 						
-						<!-- Old Text area replaced with new AJAX dropdown list -->
-						<!-- textarea name="textarea2" id="textarea2" rows="6" cols="40"></textarea --></label>
-				<br /> 
-				<div id="appendNewComplaints">
-				</div>
-				<input id="new_complaint_input"
+					<!-- textarea name="textarea2" id="textarea2" rows="6" cols="40"></textarea --></label>
+				<br />
+				<div id="appendNewComplaints"></div> <input id="new_complaint_input"
 				onclick="addNewComplaint('complaint')"
-				placeholder="Add or Remove complaint" style="margin-top: 10px;" />
-				<!--  /div -->
-				</td>
+				placeholder="Add or Remove complaint" style="margin-top: 10px;" /> <!--  /div -->
+			</td>
 
 
 
@@ -230,63 +192,19 @@ $(function() {
 
 			<!-- ______________________________Get patient Diagnosis Details section______________________________ -->
 			<!--  tr -->
-			<td valign="top" style="height: auto; width: 50%;"><label> <font
-					color='#000000' face='Tahoma' size='4'> Diagnoses </font><br /> <script
+			<td valign="top" id="diagnosis_div" style="height: auto; width: 50%;"><label>
+					<font color='#000000' face='Tahoma' size='4'> Diagnoses </font><br />
+					<!--  Use disabled input for better UI don't remove. can't select next one without it  -->
+					<input type="text" disabled="disabled" style="display: none;" /> <script
 						type="text/javascript">
-							var numberOfDiagnosisList = 0;
-							function onchangeDiagnosis(currentSelectList) {
-								//alert(currentSelectList.id);
-								numberOfDiagnosisList += 1;
-								//alert(numberOfDiagnosisList);
-								var currentDiagnosisObject = document.getElementById(currentSelectList.id);
-								var currentDiagnosisInnerHtml = currentDiagnosisObject.innerHTML;
-								//alert(currentComplaintInnerHtml);
-								var nextSelectObject = document.createElement("select");
-								//alert("complaint"+numberOfComplaintList);
+					loadOptionsFromDb('diagnosis');
+					</script></label><br />
+					<div id="appendNewDiagnoses"></div> <input
+					onclick="addNewComplaint('diagnosis')" id="new_diagnosis_input"
+					placeholder="Add or Remove Diagnosis" style="margin-top: 10px;" />
 
-								nextSelectObject.setAttribute("id", "diagnosis" + numberOfDiagnosisList);
-								nextSelectObject.setAttribute("onchange", "if (this.selectedIndex) onchangeDiagnosis(this);");
-								nextSelectObject.setAttribute("class", "diagnosis_class");
-
-								nextSelectObject.setAttribute("display", "none");
-								nextSelectObject.innerHTML = currentDiagnosisInnerHtml;
-								var diagnosisParentElement = document.getElementById("diagnosis_div");
-								//complaintParentElement.appendChild(nextSelectObject);
-
-								var removeIcon = document.createElement("img");
-								removeIcon.setAttribute("src", "../../images/new/mm/remove.ico");
-								removeIcon.setAttribute("onclick", "$(this).prev('select.diagnosis_class').remove();$(this).remove();");
-
-								diagnosisParentElement.insertBefore(nextSelectObject, document.getElementById("new_diagnosis_input"));
-
-								diagnosisParentElement.insertBefore(removeIcon, document.getElementById("new_diagnosis_input"));
-
-								$("#diagnosis" + numberOfDiagnosisList).fadeIn();
-								$("#diagnosis" + numberOfDiagnosisList).focus();
-								//$("#complaint"+(numberOfComplaintList-1)).prop("disabled","disabled");
-								return 0;
-
-							}
-
-                                                  </script>
-					<div id="diagnosis_div"
-						style="height: auto; overflow: auto; border: none; margin: 0px;">
-						<!--  Use disabled input for better UI don't remove. can't select next one without it  -->
-						<input type="text" disabled="disabled" style="display: none;" /> <select
-							id="diagnosis0" class="diagnosis_class"
-							onchange="if (this.selectedIndex) onchangeDiagnosis(this);">
-							<option style='font-size: 13pt; width: 220px;'>Diagnosis</option>
-							<?php
-							while ( $diagnosis = mysql_fetch_assoc ( $diagnosis_result ) ) {
-								print "<option style='font-size: 13pt;width: 220px;'>" . $diagnosis ["diagnosis"] . "</option>";
-							}
-							?>
-						</select><br /> <input onclick="addNewComplaint('diagnosis')"
-							id="new_diagnosis_input" placeholder="Add or Remove Diagnosis"
-							style="margin-top: 10px;" />
-
-					</div> <!-- Old textarea replaced with ajax dropdown menu --> <!-- textarea name="textarea3" id="textarea3" rows="6" cols="40"></textarea -->
-			</label></td>
+					<!-- Old textarea replaced with ajax dropdown menu --> <!-- textarea name="textarea3" id="textarea3" rows="6" cols="40"></textarea -->
+			</td>
 
 		</tr>
 
@@ -571,3 +489,31 @@ $(function() {
 
 </body>
 </html>
+
+
+<?php
+/*
+ * This section is code greave yard old codes algos etc.. are saved in this area for recovery purpose
+ */
+
+/* 
+ * 
+ *  
+ *  
+ *
+ *  
+ *  <script type="text/javascript">
+					loadOptionsFromDb('complaint');
+					</script>
+ 
+ 
+ 
+ 
+ *
+ *
+ */
+
+
+
+
+?>
