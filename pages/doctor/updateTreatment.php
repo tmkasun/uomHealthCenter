@@ -43,7 +43,7 @@ function insertMessage($regNo, $diagnoses, $complaints, $treatments, $otherNotes
 	// this time stamp is the key in each complaint treatment details and diagnosis databases
 	$timeStamp = date ( "Y-m-d H:i:s" );
 	
-	$insertTreatmentsQuery = "insert into STUDENT_TREATMENTS(time_stamp,drug,frequency,dosage,ac_pc) values ";
+	$insertTreatmentsQuery = "insert into STUDENT_TREATMENTS(time_stamp,drug,frequency,dosage,ac_pc,number_of_tablets) values ";
 	
 	$otherNotes = mysql_real_escape_string ( $otherNotes );
 	$refDoctor = mysql_real_escape_string ( $refDoctor );
@@ -60,8 +60,9 @@ function insertMessage($regNo, $diagnoses, $complaints, $treatments, $otherNotes
 		$treatment [1] = mysql_real_escape_string ( $treatment [1] );
 		$treatment [2] = mysql_real_escape_string ( $treatment [2] );
 		$treatment [3] = mysql_real_escape_string ( $treatment [3] );
+		$treatment [4] = mysql_real_escape_string ( $treatment [4] );
 		
-		$insertTreatmentsQuery .= "('$timeStamp','$treatment[0]','$treatment[2]','$treatment[1]','$treatment[3]'),";
+		$insertTreatmentsQuery .= "('$timeStamp','$treatment[0]','$treatment[2]','$treatment[1]','$treatment[3]','$treatment[4]'),";
 	}
 	
 	foreach ( json_decode ( $complaints ) as $complaint ) {

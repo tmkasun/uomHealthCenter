@@ -1,12 +1,9 @@
 <?php
-session_start();
+session_start ();
 
-
-if($_SESSION['LoginStatus'] != "2")
-{
-
-	header('Location:../../index.php');
-
+if ($_SESSION ['LoginStatus'] != "2") {
+	
+	header ( 'Location:../../index.php' );
 }
 ?>
 <html>
@@ -14,27 +11,25 @@ if($_SESSION['LoginStatus'] != "2")
 <title></title>
 </head>
 <body>
-	<?php 
-
+	<?php
+	
 	require '../../inc/config.php';
-
-	$studentID=$_POST["studentID"];
-	$timeStamp = $_POST["timeStamp"];
-
-
-
+	
+	$studentID = $_POST ["studentID"];
+	$timeStamp = $_POST ["timeStamp"];
+	
 	$fetchComplaintsSQL = "select * from STUDENT_COMPLAINTS where time_stamp = '$timeStamp'";
 	$fetchDiagnosesSQL = "select * from STUDENT_DIAGNOSES where time_stamp = '$timeStamp'";
 	$fetchTreatmentsSQL = "select * from STUDENT_TREATMENTS where time_stamp = '$timeStamp'";
 	$fetchTreatmentDetailsSQL = "select other_notes,TreatmentStatus,RefDoctor from treatment where time_stamp = '$timeStamp' and studentID = '$studentID'";
-
-	$resultComplaintsSQL = @mysql_query($fetchComplaintsSQL, $connection);
-	$resultDiagnosesSQL = @mysql_query($fetchDiagnosesSQL, $connection);
-	$resultTreatmentsSQL = @mysql_query($fetchTreatmentsSQL, $connection);
-	$resultTreatmentDetailsSQL = @mysql_query($fetchTreatmentDetailsSQL, $connection);
-
+	
+	$resultComplaintsSQL = @mysql_query ( $fetchComplaintsSQL, $connection );
+	$resultDiagnosesSQL = @mysql_query ( $fetchDiagnosesSQL, $connection );
+	$resultTreatmentsSQL = @mysql_query ( $fetchTreatmentsSQL, $connection );
+	$resultTreatmentDetailsSQL = @mysql_query ( $fetchTreatmentDetailsSQL, $connection );
+	
 	?>
-	<table style="width: 100%; height: auto;" >
+	<table style="width: 100%; height: auto;">
 		<tbody>
 			<tr>
 				<th>Complaints</th>
@@ -47,15 +42,15 @@ if($_SESSION['LoginStatus'] != "2")
 				<td>
 					<ul>
 
-						<?php 
-						while($result = mysql_fetch_assoc($resultComplaintsSQL)){
-					?>
-						<li><?php print $result["complaint"] ?>
+						<?php
+						while ( $result = mysql_fetch_assoc ( $resultComplaintsSQL ) ) {
+							?>
+						<li><?php print $result["complaint"]?>
 						</li>
 
-						<?php 
-				}
-				?>
+						<?php
+						}
+						?>
 					</ul>
 				</td>
 				<!-- _________________________________________  Fill Complaints Column End ________________________________________________ -->
@@ -64,15 +59,15 @@ if($_SESSION['LoginStatus'] != "2")
 				<td>
 					<ul>
 
-						<?php 
-						while($result = mysql_fetch_assoc($resultDiagnosesSQL)){
-					?>
-						<li><?php print $result["diagnosis"] ?>
+						<?php
+						while ( $result = mysql_fetch_assoc ( $resultDiagnosesSQL ) ) {
+							?>
+						<li><?php print $result["diagnosis"]?>
 						</li>
 
-						<?php 
-				}
-				?>
+						<?php
+						}
+						?>
 					</ul>
 				</td>
 				<!-- _________________________________________  Fill Diagnoses Column End ________________________________________________ -->
@@ -80,94 +75,109 @@ if($_SESSION['LoginStatus'] != "2")
 			</tr>
 
 			<tr style="background-color: aqua;">
-				<th colspan="4">Treatments</th>
+				<th colspan="5">Treatments</th>
 
 			</tr>
 			<tr>
 				<!-- _________________________________________  Fill Treatment Details  Section ________________________________________________ -->
-				<?php 
-				$treatmentDetailsArray = array("drug"=>array(),"dosage"=>array(),"frequency"=>array(),"ac_pc"=>array());
-				while($result = mysql_fetch_assoc($resultTreatmentsSQL)){
-array_push($treatmentDetailsArray["drug"], $result["drug"]);
-array_push($treatmentDetailsArray["dosage"], $result["dosage"]);
-array_push($treatmentDetailsArray["frequency"], $result["frequency"]);
-array_push($treatmentDetailsArray["ac_pc"], $result["ac_pc"]);				
-}
+				<?php
+				$treatmentDetailsArray = array (
+						"drug" => array (),
+						"dosage" => array (),
+						"frequency" => array (),
+						"ac_pc" => array (),
+						"number_of_tablets" => array () 
+				);
+				while ( $result = mysql_fetch_assoc ( $resultTreatmentsSQL ) ) {
+					array_push ( $treatmentDetailsArray ["drug"], $result ["drug"] );
+					array_push ( $treatmentDetailsArray ["dosage"], $result ["dosage"] );
+					array_push ( $treatmentDetailsArray ["frequency"], $result ["frequency"] );
+					array_push ( $treatmentDetailsArray ["ac_pc"], $result ["ac_pc"] );
+					array_push ( $treatmentDetailsArray ["number_of_tablets"], $result ["number_of_tablets"] );
+				}
 				?>
 				<td>
-				<!-- Fill Druges Column -->
-				Drugs
+					<!-- Fill Druges Column --> Drugs
 					<ul>
 
-						<?php 
-				foreach ($treatmentDetailsArray["drug"] as $value) {
-						
-					?>
-						<li><?php print $value ?>
+						<?php
+						foreach ( $treatmentDetailsArray ["drug"] as $value ) {
+							
+							?>
+						<li><?php print $value?>
 						</li>
 
-						<?php 
-				}
-				?>
-					</ul>
-					<!-- Fill Druges Column End -->
+						<?php
+						}
+						?>
+					</ul> <!-- Fill Druges Column End -->
 				</td>
-				
-								<td>
-				<!-- Fill Druges Column -->
-				Dosage
+
+				<td>
+					<!-- Fill Druges Column --> Dosage
 					<ul>
 
-						<?php 
-						foreach ($treatmentDetailsArray["dosage"] as $value) {
-					?>
-						<li><?php print $value ?>
+						<?php
+						foreach ( $treatmentDetailsArray ["dosage"] as $value ) {
+							?>
+						<li><?php print $value?>
 						</li>
 
-						<?php 
-				}
-				?>
-					</ul>
-					<!-- Fill Druges Column End -->
+						<?php
+						}
+						?>
+					</ul> <!-- Fill Druges Column End -->
 				</td>
-								<td>
-				<!-- Fill Druges Column -->
-				Frequency
+				<td>
+					<!-- Fill Druges Column --> Frequency
 					<ul>
 
-						<?php 
-						foreach ($treatmentDetailsArray["frequency"] as $value) {
-					?>
-						<li><?php print $value ?>
+						<?php
+						foreach ( $treatmentDetailsArray ["frequency"] as $value ) {
+							?>
+						<li><?php print $value?>
 						</li>
 
-						<?php 
-				}
-				?>
-					</ul>
-					<!-- Fill Druges Column End -->
+						<?php
+						}
+						?>
+					</ul> <!-- Fill Druges Column End -->
 				</td>
-								<td>
-				<!-- Fill Druges Column -->
-				Ac/Pc
+				<td>
+					<!-- Fill Druges Column --> Ac/Pc
 					<ul>
 
-						<?php 
-						foreach ($treatmentDetailsArray["ac_pc"] as $value) {
-					?>
-						<li><?php print $value ?>
+						<?php
+						foreach ( $treatmentDetailsArray ["ac_pc"] as $value ) {
+							?>
+						<li><?php print $value?>
 						</li>
 
-						<?php 
-				}
-				?>
-					</ul>
-					<!-- Fill Druges Column End -->
+						<?php
+						}
+						?>
+					</ul> <!-- Fill Druges Column End -->
 				</td>
 				<!-- _________________________________________  Fill Treatment Details   End ________________________________________________ -->
-				
-			
-			
+				<!-- Fill number of tablets column -->
+				<td># Tablets
+					<ul>
+
+						<?php
+						foreach ( $treatmentDetailsArray ["number_of_tablets"] as $value ) {
+							?>
+						<li><?php print $value?>
+						</li>
+
+						<?php
+						}
+						?>
+					</ul>
+
+				</td>
+
+				<!-- Fill numberof treatments column end -->
+
 			</tr>
 			<tr>
 				<th>Other Notes</th>
@@ -178,15 +188,15 @@ array_push($treatmentDetailsArray["ac_pc"], $result["ac_pc"]);
 				<td>
 					<ul>
 
-						<?php 
-						while($result = mysql_fetch_assoc($resultTreatmentDetailsSQL)){
-					?>
-						<li><?php print $result["other_notes"] ?>
+						<?php
+						while ( $result = mysql_fetch_assoc ( $resultTreatmentDetailsSQL ) ) {
+							?>
+						<li><?php print $result["other_notes"]?>
 						</li>
 
-						<?php 
-				}
-				?>
+						<?php
+						}
+						?>
 					</ul>
 				</td>
 				<!-- _________________________________________  Fill Other Notes  Section End ________________________________________________ -->
@@ -197,22 +207,21 @@ array_push($treatmentDetailsArray["ac_pc"], $result["ac_pc"]);
 		</tbody>
 	</table>
 
-	<?php 
-	die();
+	<?php
+	die ();
 	?>
 
 	<div
 		style="position: relative; margin-left: auto; margin-right: auto; width: 90%; overflow: auto; height: 400px;">
 		<br />
-		<?php 
-		while($treatmentDetails = mysql_fetch_assoc($result)){
-     foreach ($treatmentDetails as $key => $value) {
-
-          print $key.":<a style='font-style: oblique;font-size: large;color: blue;'>".$value."<a/><br/>";
-
-     }
-}
-?>
+		<?php
+		while ( $treatmentDetails = mysql_fetch_assoc ( $result ) ) {
+			foreach ( $treatmentDetails as $key => $value ) {
+				
+				print $key . ":<a style='font-style: oblique;font-size: large;color: blue;'>" . $value . "<a/><br/>";
+			}
+		}
+		?>
 	</div>
 
 </body>

@@ -93,7 +93,7 @@ $(function() {
 		onclick="slideup()" class="clear_bt" value="Go Back">Back</button>
 
 	<table id="treatmentTable" border="1"
-		style="margin-left: 12%; background: rgba(100, 200, 255, 0.3); border-radius: 30px; border: none; height: auto; width: 80%">
+		style="margin-left: 5%; background: rgba(100, 200, 255, 0.3); border-radius: 30px; border: none; height: auto; width: 90%">
 
 		<tr valign="top">
 			<td width="50%"><img id="profile_pic"
@@ -198,12 +198,12 @@ $(function() {
 					<input type="text" disabled="disabled" style="display: none;" /> <script
 						type="text/javascript">
 					loadOptionsFromDb('diagnosis');
-					</script></label><br />
-					<div id="appendNewDiagnoses"></div> <input
-					onclick="addNewComplaint('diagnosis')" id="new_diagnosis_input"
-					placeholder="Add or Remove Diagnosis" style="margin-top: 10px;" />
-
-					<!-- Old textarea replaced with ajax dropdown menu --> <!-- textarea name="textarea3" id="textarea3" rows="6" cols="40"></textarea -->
+					</script>
+			</label><br />
+				<div id="appendNewDiagnoses"></div> <input
+				onclick="addNewComplaint('diagnosis')" id="new_diagnosis_input"
+				placeholder="Add or Remove Diagnosis" style="margin-top: 10px;" /> <!-- Old textarea replaced with ajax dropdown menu -->
+				<!-- textarea name="textarea3" id="textarea3" rows="6" cols="40"></textarea -->
 			</td>
 
 		</tr>
@@ -235,7 +235,8 @@ $(function() {
 				var nextinputObject = document.createElement("input");
 				var nextFrequencyObject = document.createElement("select");
 				var nextAcPcObject = document.createElement("select");
-
+				var nextNumTabObject = $("<input></input>");// new tablet count comes with new JQuery object declaring method
+				
 				// Set attributes for treatment selector
 				nextSelectObject.setAttribute("id", "treatment" + numberOfTreatmentList);
 				nextSelectObject.setAttribute("onchange", "if (this.selectedIndex) onchangeTreatment(this);");
@@ -254,8 +255,16 @@ $(function() {
 				nextAcPcObject.setAttribute("id", "treatmentAcPc" + numberOfTreatmentList);
 				nextAcPcObject.setAttribute("class", "treatment_acpc_class");
 
-				nextSelectObject.setAttribute("display", "none");
+				// Set attributes for tablets count input
+				nextNumTabObject.attr({
+					"id": "treatmentNumTab"+ numberOfTreatmentList, 
+					"class": "treatment_numtab_class",
+					"display": "none",
+					"type" : "text",
+					"size": "10"
+					});
 
+				nextSelectObject.setAttribute("display", "none");
 				nextAcPcObject.setAttribute("display", "none");
 				nextFrequencyObject.setAttribute("display", "none");
 				nextinputObject.setAttribute("display", "none");
@@ -272,6 +281,23 @@ $(function() {
 					"margin-left" : "10%",
 					"margin-right" : "10%"
 				});
+				$(nextNumTabObject).css({
+					"margin" : "2%",
+					"margin-left" : "10%",
+					"margin-right" : "10%"
+				});
+
+//margin-bottom: 2%; margin-top: 2%;margin : 2%;margin-left: 10%;margin-right: 10%;
+
+				
+				$(nextSelectObject).css({
+					"margin" : "2%",
+					"margin-left" : "10%",
+					"margin-right" : "10%",
+					"margin-bottom": "1.5%",
+					"margin-top": "1.5%"
+							});
+				
 				//$(nextinputObject).css("margin","2%");
 
 				nextSelectObject.innerHTML = currentTreatmentInnerHtml;
@@ -292,11 +318,12 @@ $(function() {
 				$(nextFrequencyObject).insertAfter($("#treatmentFrequency" + (numberOfTreatmentList - 1)));
 				$(nextAcPcObject).insertAfter($("#treatmentAcPc" + (numberOfTreatmentList - 1)));
 				$(nextinputObject).insertAfter($("#treatmentDosage" + (numberOfTreatmentList - 1)));
-
+				$(nextNumTabObject).insertAfter($("#treatmentNumTab" + (numberOfTreatmentList - 1)));
+				
 				//diagnosisParentElement.insertBefore(nextSelectObject, document.getElementById("new_diagnosis_input"));
 
 				$("#treatment" + numberOfTreatmentList).fadeIn("slow");
-
+				$("#treatmentNumTab" + numberOfTreatmentList).fadeIn("slow");
 				$("#treatmentFrequency" + numberOfTreatmentList).fadeIn("slow");
 				$("#treatmentAcPc" + numberOfTreatmentList).fadeIn("slow");
 				$("#treatmentDosage" + numberOfTreatmentList).fadeIn("slow");
@@ -325,7 +352,7 @@ $(function() {
 					<div style="height: auto; overflow: auto; border: none; margin: 0;">
 
 						<select id="treatment0" class="treatment_class"
-							onchange="if (this.selectedIndex) onchangeTreatment(this);">
+							onchange="if (this.selectedIndex) loadOptionsFromDb('treatment');" style="margin-bottom: 2%; margin-top: 2%;margin : 2%;margin-left: 10%;margin-right: 10%;width: 200px;">
 							<option selected="selected"
 								style="font-size: 13pt; width: 220px;">Treatment</option>
 
@@ -357,9 +384,11 @@ $(function() {
 					style="position: relative; float: left; height: auto; width: 18%; margin: 0, auto;"
 					align="center">
 					<p style="margin: 0; padding: 0;">Dosage(in mg)</p>
-
+<!-- 		"margin" : "2%",
+					"margin-left" : "10%",
+					"margin-right" : "10%" -->
 					<input id="treatmentDosage0" class="treatment_dosage_class"
-						type="text" size="10" style="margin-bottom: 2%; margin-top: 2%" />
+						type="text" size="10" style="margin-bottom: 2%; margin-top: 2%;margin : 2%;margin-left: 10%;margin-right: 10%; " />
 
 				</div> <!-- _______________________________________ Treatment Dosage selector End _______________________________________ -->
 
@@ -392,13 +421,23 @@ $(function() {
 					<!-- _______________________________________ Treatment AC/PC selector _______________________________________ -->
 					<p style="margin: 0; padding: 0;">AC/PC</p>
 
-					<select style="margin: 2%;" id="treatmentAcPc0"
+					<select style="margin-bottom: 2%; margin-top: 2%;margin : 2%;margin-left: 10%;margin-right: 10%;" id="treatmentAcPc0"
 						class="treatment_acpc_class">
 						<option>Before Meal</option>
 						<option selected="selected">After Meal</option>
 					</select>
 
 				</div> <!-- _______________________________________ Treatment AC/PC selector End _______________________________________ -->
+
+				<!-- _______________________________________ Treatment number of tablets selector _______________________________________ -->
+				<div id="treatment_numtab"
+					style="position: relative; float: left; height: auto; width: 18%; margin: 0, auto;"
+					align="center">
+					<p style="margin: 0; padding: 0;">Number of Tablets</p>
+
+					<input id="treatmentNumTab0" class="treatment_numtab_class"
+						type="text" size="10" style="margin-bottom: 2%; margin-top: 2%;margin : 2%;margin-left: 10%;margin-right: 10%;" />
+				</div> <!-- _______________________________________ Treatment number of tablets selector End _______________________________________ -->
 
 				<!-- ____________________________ Treatments to Patients End ____________________________ -->
 		

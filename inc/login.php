@@ -30,9 +30,9 @@ if($_POST)
 	{
 		/*session_regenerate_id();*/
 		$member=mysql_fetch_assoc($result);
-		session_register("USERNAME");
-		session_register("USERID");
-		session_register("LoginStatus");
+		//session_register("USERNAME");
+		//session_register("USERID");
+		//session_register("LoginStatus");
 		$_SESSION['USERNAME'] = $member['Name'];
 		$_SESSION['USERID'] = $member['UserID'];
 		$_SESSION['LoginStatus']= $member['loginStatus'];

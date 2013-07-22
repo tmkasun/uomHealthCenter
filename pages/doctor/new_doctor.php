@@ -24,37 +24,33 @@
 	src="../../javascripts/new/ajaxSupport.js">	</script>
 </head>
 <?php
-//bugs = user can enter same
-//bugs = phone number as new phone number and unutilized pre_phone_numbers table coz it is using datetime(updated_on) as primary key
-error_reporting(E_PARSE);
+// bugs = user can enter same
+// bugs = phone number as new phone number and unutilized pre_phone_numbers table coz it is using datetime(updated_on) as primary key
+error_reporting ( E_PARSE );
 // more details after every row
 // use can change their details
-//color the column
+// color the column
 
-if(!isset($_SESSION["USERID"])){
-	header("location:../../index.php");
+if (! isset ( $_SESSION ["USERID"] )) {
+	header ( "location:../../index.php" );
 	print "You are not loged in,please login to continue";
-	die();
+	die ();
 }
 
-
-if($_SERVER[REMOTE_ADDR] == '127.0.0.1'){
-     include_once('../../inc/new/local.php');
-}
-else
-	include_once('../../inc/new/server.php');
+include_once ('../../inc/new/server.php');
 
 $get_user_details = "select UserID,Name,AccountType,loginStatus from user where UserID = '$_SESSION[USERID]'";
 
-$result = mysql_query($get_user_details,$connection);//query send to mysql database to check username and password
+$result = mysql_query ( $get_user_details, $connection ); // query send to mysql database to check username and password
 
-$user_details = mysql_fetch_array($result);
-//can replace with ligin.php $_SESSION variables
-$_SESSION['Name'] = $user_details['Name'];
-$_SESSION['UserID'] = $user_details['UserID'];
-$_SESSION['AccountType'] = $user_details['AccountType'];
-$_SESSION['loginStatus'] = $user_details['loginStatus'];
+$user_details = mysql_fetch_array ( $result );
+// die(print_r($user_details["Name"]));
 
+// can replace with ligin.php $_SESSION variables
+$_SESSION ['Name'] = $user_details ['Name'];
+$_SESSION ['UserID'] = $user_details ['UserID'];
+$_SESSION ['AccountType'] = $user_details ['AccountType'];
+$_SESSION ['loginStatus'] = $user_details ['loginStatus'];
 
 ?>
 <title><?php echo $_SESSION['Name'] ?> Welcome Health Center</title>
@@ -63,17 +59,11 @@ $_SESSION['loginStatus'] = $user_details['loginStatus'];
 	<div id="top_bar">
 		<div id="hello"
 			style="position: relative; margin: 0; margin-left: 2%; margin-bottom: 0%; padding-top: 1%;">
-			<a style="text-decoration: none; font-size: 10pt;">Welcome </a> <a
-				onclick="ajax_profile()" id="name_dis"
-				onmouseout="name_dis('<?php echo $user_details['Name']; ?>',2)"
-				onmouseover="name_dis('<?php echo $user_details['UserID']; ?>',1)"
-				style="color: #CC9900; border-radius: 5px; box-shadow: 0px 0px 12px 2px #333300; background-color: #663300; font-size: 13pt;"><?php print $user_details['Name']; ?>
-			</a>
-
+			<a style="text-decoration: none; font-size: 10pt;">Welcome </a>
 			<div id="hello"
 				style="position: relative; margin: 0; margin-right: 2%; margin-bottom: 0%; padding-top: 0%; float: right;">
 				<a href="../../inc/logout.php" target="_self"> <font size="3pt"
-					color='#341919'>Logout:<?php print $_SESSION[USERID] ?>
+					color='#341919'>Logout:<?php print $_SESSION[USERID]?>
 				</font>
 				</a>
 			</div>
@@ -105,15 +95,15 @@ $_SESSION['loginStatus'] = $user_details['loginStatus'];
 		</div>
 
 	</div>
-	
+
 	<!-- Show this button to get back the navigation pane if it is gone by mistake, need to impliment no ligic found  -->
 	<!--  div id="show_navigation_pane"
 		style="position: fixed; float: left; height: auto; width: 10%; margin-top: 12%; margin-left: 5%; z-index: 40; display: none;">
 		<button onclick="$('#navigation_pane').css({'display':''})">Show Navigation Pane</button>
 	</div -->
-	
+
 	<div id="navigation_pane"
-		style="position: fixed; float: left; height: auto; width: 10%; margin-top: 12%; margin-left: 5%; z-index: 40; display: none;">
+		style="position: fixed; float: left; height: auto; width: 10%; margin-top: 12%; margin-left: 1%; z-index: 40; display: none;">
 
 
 		<button type="button" class="navigation_button" id="treatment_button"

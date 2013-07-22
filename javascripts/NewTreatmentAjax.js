@@ -93,8 +93,15 @@ function checkForm() {
 	dosage = [];
 	frequency = [];
 	acPc = [];
+	numtab = []; // NUmber of tablets per drug
+
+	numtab = $(".treatment_numtab_class").map(function() {
+		currentValue = $("#" + this.id).val();
+		return currentValue;
+	}).get();
 
 	drug = $(".treatment_class").map(function() {
+		//alert(currentValue);
 		currentValue = $("#" + this.id).val();
 		return currentValue;
 	}).get();
@@ -125,26 +132,31 @@ function checkForm() {
 	for ( var i = 0; i < drug.length; i++) {
 		// remove unwanted records
 
-		if (!(drug[i] == "Treatment"))
-			treatment.push([ drug[i], dosage[i], frequency[i], acPc[i] ]);
+		if (!(drug[i] === "treatment")) {
+			treatment.push([ drug[i], dosage[i], frequency[i], acPc[i],
+					numtab[i] ]);
+			alert(drug[i] + "added");
+		}
 
 	}
 
-/*	alert(JSON.stringify(treatment));
-	return 0;*/
+	/*
+	 * alert(JSON.stringify(treatment)); return 0;
+	 */
 	var countComplaint = 0;
 	$(".complaint_class").each(function() {
 		countComplaint += 1;
 		currentComplaint = document.getElementById(this.id).value;
-		alert(currentComplaint);
+		// alert(currentComplaint);
 		if (currentComplaint != "complaint") {
-			alert("Put to DB");
+			// alert("Put to DB");
 			complaints.push(currentComplaint);
 		}
 	});
-	/*//complaint = $("#complaint :selected").text();
-	alert(complaints);
-	return	0;*/
+	/*
+	 * //complaint = $("#complaint :selected").text(); alert(complaints); return
+	 * 0;
+	 */
 	var countDiagnosis = 0;
 	$(".diagnosis_class").each(function() {
 		countDiagnosis += 1;
@@ -415,27 +427,39 @@ function addThisInformation(inputValue) {
 	var requestType = $("#newInformation").attr("inputType");
 
 	// alert("asd");
-	$.ajax({
-		url : 'new_details_from_database.php',
-		type : "POST",
-		data : {
-			"requestType" : requestType,
-			"method" : "insert",
-			"data" : data
-		}
-	}).done(function(result) {
-		if(requestType == "treatment_type"){
-			alert("Need to impliment this ");
-		}
-		
-		loadOptionsFromDb(requestType);
-		close_preTreatmentDetails();
-		alert(data + " added Successfully");
-		// var parent = document.getElementById(elementId);
+	$
+			.ajax({
+				url : 'new_details_from_database.php',
+				type : "POST",
+				data : {
+					"requestType" : requestType,
+					"method" : "insert",
+					"data" : data
+				}
+			})
+			.done(
+					function(result) {
+						if (requestType == "treatment_type" && numberOfTreatmentList > 0) {
+							$("#treatment" + (numberOfTreatmentList)).remove();
+							$("#treatmentDosage" + (numberOfTreatmentList))
+									.remove();
+							$("#treatmentFrequency" + (numberOfTreatmentList))
+									.remove();
+							$("#treatmentAcPc" + (numberOfTreatmentList))
+									.remove();
+							$("#treatmentNumTab" + (numberOfTreatmentList))
+									.remove();
+							numberOfTreatmentList -= 1;
+						}
+						loadOptionsFromDb((requestType == "treatment_type") ? "treatment"
+								: requestType);
+						close_preTreatmentDetails();
+						alert(data + " added Successfully");
+						// var parent = document.getElementById(elementId);
 
-	}
+					}
 
-	);
+			);
 
 }
 
@@ -478,8 +502,8 @@ numberOfDiagnosisList = 0;
 numberOfTreatmentList = 0;
 
 function loadOptionsFromDb(requestType) { // returnHtmlStyle
-	
-//	alert(requestType+"_class"); 
+
+	// alert(requestType+"_class");
 	/*
 	 * Define common elements and attribute for all complaints, diagnosis and
 	 * treatment selectors
@@ -499,15 +523,21 @@ function loadOptionsFromDb(requestType) { // returnHtmlStyle
 	 * });
 	 */
 
-	$.ajax({
-				url : 'new_details_from_database.php',
-				type : "POST",
-				dataType : "JSON",
-				data : {
-					"requestType" : requestType,
-					"method" : "retrive"
-				}
-			})
+	$
+			.ajax(
+					{
+						url : 'new_details_from_database.php',
+						type : "POST",
+						dataType : "JSON",
+						data : {
+							"requestType" : (requestType == "treatment") ? "treatment_type"
+									: requestType, // ;) fk yahh it's worked JS
+													// shorthand method for if
+													// else for more info
+													// http://www.jquery4u.com/javascript/shorthand-javascript-techniques/
+							"method" : "retrive"
+						}
+					})
 			.done(
 					function(result) {
 						/*
@@ -515,7 +545,7 @@ function loadOptionsFromDb(requestType) { // returnHtmlStyle
 						 */
 
 						var newOptionList = $("<option></option>");
-						$(newOptionList).text(requestType);
+						$(newOptionList).text(requestType).css("color", "gray");
 						$(nextSelectObject).append(newOptionList);
 						// newOptionList.css("font-size","13pt");
 						for ( var information in result) {
@@ -560,14 +590,17 @@ function loadOptionsFromDb(requestType) { // returnHtmlStyle
 
 							$("#appendNewComplaints").append(nextSelectObject,
 									removeIcon, "<br/>");
-							$("#"+requestType + numberOfComplaintList).fadeIn();
-							$("#"+requestType+ numberOfComplaintList).focus();
+							$("#" + requestType + numberOfComplaintList)
+									.fadeIn();
+							$("#" + requestType + numberOfComplaintList)
+									.focus();
 
 							break;
 						case "diagnosis":
-	/*						alert(numberOfDiagnosisList);
-							alert(nextSelectObject);
-	*/						
+							/*
+							 * alert(numberOfDiagnosisList);
+							 * alert(nextSelectObject);
+							 */
 							numberOfDiagnosisList += 1;
 							nextSelectObject
 									.attr({
@@ -586,21 +619,174 @@ function loadOptionsFromDb(requestType) { // returnHtmlStyle
 												+ requestType
 												+ "_class').remove();$(this).remove()"
 									});
-							//numberOfDiagnosisList
+							// numberOfDiagnosisList
 							$("#appendNewDiagnoses").append(nextSelectObject,
 									removeIcon, "<br/>");
-							$("#"+requestType+ numberOfDiagnosisList).fadeIn();
-							$("#"+requestType + numberOfDiagnosisList).focus();
+							$("#" + requestType + numberOfDiagnosisList)
+									.fadeIn();
+							$("#" + requestType + numberOfDiagnosisList)
+									.focus();
 
-
-							
 							break;
 
 						case "treatment":
+							/*
+							 * numberOfTreatmentList
+							 */
+							// need to be implimented
+							numberOfTreatmentList += 1;
+							// alert(numberOfDiagnosisList);
+							// alert(currentComplaintInnerHtml);
+							// alert("complaint"+numberOfComplaintList);
+							// additional inputs related to drug
+							var nextinputObject = document
+									.createElement("input");
+							var nextFrequencyObject = document
+									.createElement("select");
+							var nextAcPcObject = document
+									.createElement("select");
+							var nextNumTabObject = $("<input></input>");// new
+							// tablet
+							// count
+							// comes
+							// with
+							// new
+							// JQuery
+							// object
+							// declaring
+							// method
+
+							nextSelectObject
+									.attr({
+										"id" : "treatment"
+												+ numberOfTreatmentList,
+										"onchange" : "if (this.selectedIndex) loadOptionsFromDb('treatment');",// change
+										// this
+										// call
+										// method
+										"class" : "treatment_class",
+										"display" : "none"
+
+									});
+
+							// Set attributes for dosage input
+							nextinputObject.setAttribute("id",
+									"treatmentDosage" + numberOfTreatmentList);
+							nextinputObject.setAttribute("class",
+									"treatment_dosage_class");
+							nextinputObject.setAttribute("size", "10");
+
+							// Set attributes for Frequency selector
+							nextFrequencyObject.setAttribute("id",
+									"treatmentFrequency"
+											+ numberOfTreatmentList);
+							nextFrequencyObject.setAttribute("class",
+									"treatment_frequency_class");
+
 							
-							/*numberOfTreatmentList
-							*/
-							
+							// Set attributes for AcPc selector
+							nextAcPcObject.setAttribute("id", "treatmentAcPc"
+									+ numberOfTreatmentList);
+							nextAcPcObject.setAttribute("class",
+									"treatment_acpc_class");
+
+							// Set attributes for tablets count input
+							nextNumTabObject.attr({
+								"id" : "treatmentNumTab"
+										+ numberOfTreatmentList,
+								"class" : "treatment_numtab_class",
+								"display" : "none",
+								"type" : "text",
+								"size" : "10"
+							});
+
+							nextAcPcObject.setAttribute("display", "none");
+							nextFrequencyObject.setAttribute("display", "none");
+							nextinputObject.setAttribute("display", "none");
+
+							// margin-left: ;margin-right:
+							$(nextAcPcObject).css({
+								"margin" : "2%",
+								"margin-left" : "10%",
+								"margin-right" : "10%"
+							});
+							$(nextFrequencyObject).css("margin", "2%");
+							$(nextinputObject).css({
+								"margin" : "2%",
+								"margin-left" : "10%",
+								"margin-right" : "10%"
+							});
+							$(nextNumTabObject).css({
+								"margin" : "2%",
+								"margin-left" : "10%",
+								"margin-right" : "10%"
+							});
+
+							// margin-bottom: 2%; margin-top: 2%;margin :
+							// 2%;margin-left: 10%;margin-right: 10%;
+
+							nextSelectObject.css({
+								"margin" : "2%",
+								"margin-left" : "10%",
+								"margin-right" : "10%",
+								"margin-bottom" : "1.5%",
+								"margin-top" : "1.5%"
+							});
+
+							// $(nextinputObject).css("margin","2%");
+
+							// nextSelectObject.innerHTML =
+							// currentTreatmentInnerHtml;
+							nextFrequencyObject.innerHTML = $(
+									"#treatmentFrequency0").html();
+							nextAcPcObject.innerHTML = $("#treatmentAcPc0")
+									.html();
+
+							// complaintParentElement.appendChild(nextSelectObject);
+
+							/*
+							 * Remove icon not in use due to high complexcity-
+							 * develop if u can :) var removeIcon =
+							 * document.createElement("img");
+							 * removeIcon.setAttribute("src",
+							 * "../../images/new/mm/remove.ico");
+							 * removeIcon.setAttribute("onclick",
+							 * "$(this).prev('select.diagnosis_class').remove();$(this).remove();");
+							 * diagnosisParentElement.insertBefore(removeIcon,
+							 * document.getElementById("new_diagnosis_input"));
+							 */
+
+							nextSelectObject.insertAfter("#treatment"
+									+ (numberOfTreatmentList - 1));
+							$(nextFrequencyObject).insertAfter(
+									$("#treatmentFrequency"
+											+ (numberOfTreatmentList - 1)));
+							$(nextAcPcObject).insertAfter(
+									$("#treatmentAcPc"
+											+ (numberOfTreatmentList - 1)));
+							$(nextinputObject).insertAfter(
+									$("#treatmentDosage"
+											+ (numberOfTreatmentList - 1)));
+							$(nextNumTabObject).insertAfter(
+									$("#treatmentNumTab"
+											+ (numberOfTreatmentList - 1)));
+
+							// diagnosisParentElement.insertBefore(nextSelectObject,
+							// document.getElementById("new_diagnosis_input"));
+
+							$("#treatment" + numberOfTreatmentList).fadeIn(
+									"slow");
+							$("#treatmentNumTab" + numberOfTreatmentList)
+									.fadeIn("slow");
+							$("#treatmentFrequency" + numberOfTreatmentList)
+									.fadeIn("slow");
+							$("#treatmentAcPc" + numberOfTreatmentList).fadeIn(
+									"slow");
+							$("#treatmentDosage" + numberOfTreatmentList)
+									.fadeIn("slow");
+
+							// $("#complaint"+(numberOfComplaintList-1)).prop("disabled","disabled");
+
 							break;
 
 						}
