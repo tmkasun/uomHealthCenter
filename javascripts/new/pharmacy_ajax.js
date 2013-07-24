@@ -1,3 +1,11 @@
+/*
+ * Lisence under MIT (GPL) 
+ * some rights reserved by Faculty of information technology University of moratuwa
+ * 
+ * 
+ * */
+
+
 function listQueue() {
 	$("#welcome_image").fadeOut();
 	// alert("ok");
@@ -24,6 +32,11 @@ function createNewDOM(studentIDNumber, TreatmentID, imageUrl, time_stamp) {
 		"TreatmentID" : TreatmentID,
 		"time_stamp" : time_stamp
 	});
+	buttonStudentID.css({
+		"cursor": "pointer"
+		
+	});
+	
 	lableForStudentID.html("ID Number: ");
 	lableForStudentID.css({
 		"font-size" : "12pt"
