@@ -761,6 +761,8 @@ function loadOptionsFromDb(requestType) { // returnHtmlStyle
 							$(nextFrequencyObject).insertAfter(
 									$("#treatmentFrequency"
 											+ (numberOfTreatmentList - 1)));
+								
+							
 							$(nextAcPcObject).insertAfter(
 									$("#treatmentAcPc"
 											+ (numberOfTreatmentList - 1)));
@@ -774,6 +776,11 @@ function loadOptionsFromDb(requestType) { // returnHtmlStyle
 							// diagnosisParentElement.insertBefore(nextSelectObject,
 							// document.getElementById("new_diagnosis_input"));
 
+							$("<br/>").insertBefore("#treatmentDosage" + numberOfTreatmentList);
+							$("<br/>").insertBefore("#treatmentNumTab" + numberOfTreatmentList);
+							
+							
+							
 							$("#treatment" + numberOfTreatmentList).fadeIn(
 									"slow");
 							$("#treatmentNumTab" + numberOfTreatmentList)

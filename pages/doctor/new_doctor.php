@@ -59,13 +59,12 @@ $_SESSION ['loginStatus'] = $user_details ['loginStatus'];
 	<div id="top_bar">
 		<div id="hello"
 			style="position: relative; margin: 0; margin-left: 2%; margin-bottom: 0%; padding-top: 1%;">
-			<a style="text-decoration: none; font-size: 10pt;">Welcome </a>
+			
 			<div id="hello"
 				style="position: relative; margin: 0; margin-right: 2%; margin-bottom: 0%; padding-top: 0%; float: right;">
-				<a href="../../inc/logout.php" target="_self"> <font size="3pt"
-					color='#341919'>Logout:<?php print $_SESSION[USERID]?>
-				</font>
-				</a>
+				You are logged in as <?php print $_SESSION[USERID]?>(
+				<a href="../../inc/logout.php" target="_self"> <font size="3pt" style="color: aqua;">Logout </font>
+				</a> )
 			</div>
 		</div>
 

@@ -121,7 +121,7 @@ $_SESSION['loginStatus'] = $user_details['loginStatus'];
 	
 	<!-- __________________________ This is the common div for display each treatment details __________________________ -->
 	<div id="pre_treatment_details"
-		style="position: fixed; width: 70%; height: auto; margin-left: 15%; margin-right: 15%; background: rgba(255, 255, 199, 1); margin-top: 7%; border-radius: 12px; z-index: 50; box-shadow: 0px 0px 20px 1px #000000;display: none;overflow: auto;">
+		style="position: fixed; width: 70%; height: auto; margin-left: 15%; margin-right: 15%; background: rgba(255, 255, 199, 1); margin-top: 7%; border-radius: 12px; z-index: 50; box-shadow: 0px 0px 20px 1px #000000;display: none;overflow: auto;cursor: pointer;">
 		<img onclick="close_preTreatmentDetails()" alt="close"
 			src="../../images/new/mm/no.ico"
 			style="position: relative; float: right;">
